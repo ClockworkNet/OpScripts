@@ -2,7 +2,6 @@
 """python-opscripts setup
 """
 # Standard library
-import distutils.sysconfig
 import os.path
 import re
 import site
@@ -43,14 +42,16 @@ from pprint import pprint
 pprint(packages)
 print "--"
 # Install config file appropriately
-config_file_path = "etc/opscripts"
+etc_path = "etc/opscripts"
+examples_path = "examples"
 if hasattr(sys, "real_prefix"):
-    config_file_path = os.path.join(sys.prefix, config_file_path)
+    etc_path = os.path.join(sys.prefix, etc_path)
+    examples_path = os.path.join(sys.prefix, examples_path)
 elif "--user" in sys.argv:
-    config_file_path = os.path.join(site.USER_BASE, config_file_path)
+    etc_path = os.path.join(site.USER_BASE, etc_path)
+    examples_path = os.path.join(site.USER_BASE, examples_path)
 else:
-    config_file_path = os.path.join(distutils.sysconfig.get_python_lib(),
-                                 config_file_path)
+    etc_path = os.path.join("/", etc_path)
 
 setup(name="OpScripts",
       version=metadata["version"],
@@ -61,7 +62,8 @@ setup(name="OpScripts",
       long_description=long_description,
       url=metadata["url"],
       packages=packages,
-      data_files=[(config_file_path, [".placeholder"])],
+      data_files=[(examples_path, ["script_template.py"]),
+                  (etc_path, [".placeholder"])],
       keywords="CLI, DevOps, Ops, sysadmin, Systems administration",
       classifiers=classifiers,
       download_url="https://github.com/ClockworkNet/OpScripts/releases",

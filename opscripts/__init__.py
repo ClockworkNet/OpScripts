@@ -2,7 +2,7 @@
 """Python libraries to assist with writing Linux Ops scripts.
 """
 
-__version__ = "0.9.4"
+__version__ = "1.0.0"
 
 __maintainer__ = "Timid Robot Zehta"
 

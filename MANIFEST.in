@@ -1,2 +1,3 @@
 include .placeholder
 include LICENSE
+include script_template.py
