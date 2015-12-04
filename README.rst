@@ -1,5 +1,5 @@
-python-opscripts
-================
+OpScripts
+=========
 
 Python libraries to assist with writing Linux Ops scripts.
 
