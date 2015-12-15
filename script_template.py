@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # vim: set fileencoding=utf-8 :
-"""Script_description_goes_here"""
+
+"""Script_description_goes_here
+"""
+
 # Standard library
 from __future__ import print_function
 import logging
 import sys
+
 # Third-party
 # [...]
+
 # Local/library specific
 from opscripts.config import v1 as ops_config
 from opscripts.logging import v1 as ops_logging
