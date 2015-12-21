@@ -18,6 +18,9 @@ from opscripts.logging import v1 as ops_logging
 from opscripts.utils import v1 as ops_utils
 
 
+LOG = logging.getLogger(__name__)
+
+
 def setup():
     """Instantiate and configure configargparse and logging.
 
@@ -43,7 +46,7 @@ def main():
     args = setup()
     ops_utils.verify_root()
     ops_utils.request_confirmation(timeout=20)
-    logging.critical("test message to demonstrate use of root logger")
+    LOG.critical("test message to demonstrate use of root logger")
 
 
 if __name__ == "__main__":
@@ -51,5 +54,5 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print()
-        logging.info("halted via KeyboardInterrupt.")
+        LOG.info("halted via KeyboardInterrupt.")
         sys.exit(130)
