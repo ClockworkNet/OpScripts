@@ -1,9 +1,12 @@
 # vim: set fileencoding=utf-8 :
+
 """OpScripts confuration library (thin wrapper over ConfigArgParse)
 """
+
 # Standard library
 import os.path
 import sys
+
 # Third-party
 import configargparse
 

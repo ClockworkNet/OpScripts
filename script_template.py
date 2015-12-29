@@ -6,19 +6,22 @@
 
 # Standard library
 from __future__ import print_function
+from collections import OrderedDict
 import logging
 import sys
 
 # Third-party
-# [...]
+import yaml
 
 # Local/library specific
 from opscripts.config import v1 as ops_config
 from opscripts.logging import v1 as ops_logging
 from opscripts.utils import v1 as ops_utils
+from opscripts.yaml import v1 as ops_yaml
 
 
 LOG = logging.getLogger(__name__)
+yaml.SafeDumper.add_representer(OrderedDict, ops_yaml.odict_rep)
 
 
 def setup():
@@ -39,6 +42,8 @@ def setup():
     args.program_name = cap.prog
     logger.dryrun(args.dryrun)
     logger.set_log_level_verbose(args.verbose)
+    LOG.warning("disabling logging to syslog")
+    logger.remove_syslog_handler()
     return args
 
 

@@ -1,9 +1,12 @@
 # vim: set fileencoding=utf-8 :
+
 """OpScripts logging library
 """
+
 # Standard Library
 import logging
 import logging.handlers
+import sys
 
 
 class OpScriptsLogging(object):
@@ -26,7 +29,11 @@ class OpScriptsLogging(object):
         self.logger.addHandler(self.handler_screen)
 
         # Syslog Handler
-        self.handler_syslog = logging.handlers.SysLogHandler("/dev/log")
+        if sys.platform == "darwin":
+            syslog = "/var/run/syslog"
+        else:
+            syslog = "/dev/log"
+        self.handler_syslog = logging.handlers.SysLogHandler(syslog)
         format_string = "{0} %(levelname)s %(message)s".format(program_name)
         syslog_format = logging.Formatter(format_string)
         self.handler_syslog.setFormatter(syslog_format)
@@ -61,3 +68,8 @@ class OpScriptsLogging(object):
         if log_level_new > 50:
             log_level_new = 50
         self.logger.setLevel(log_level_new)
+
+    def remove_syslog_handler(self):
+        """Remove logging to syslog.
+        """
+        self.logger.removeHandler(self.handler_syslog)
