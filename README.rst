@@ -25,14 +25,24 @@ For example::
     from opscripts.config import v1 as ops_config
     from opscripts.logging import v1 as ops_logging
     from opscripts.utils import v1 as ops_utils
+    from opscripts.yaml import v1 as ops_yaml
+
+For a more in-depth example, see the `<script_template.py>`_.
 
 
 Dependencies
 ============
 
-- `ConfigArgParse`_
+- ``opscripts.config``
+
+  - `ConfigArgParse`_
+
+- ``opscripts.yaml``
+
+  - `PyYAML`_
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
+.. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
 
 
 License
