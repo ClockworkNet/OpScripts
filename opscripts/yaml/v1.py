@@ -3,6 +3,9 @@
 """OpScripts PyYAML utility functions.
 """
 
+# Third-party
+import yaml
+
 
 def represent_odict(dump, tag, mapping, flow_style=None):
     """Like BaseRepresenter.represent_mapping, but does not issue the sort().
@@ -27,7 +30,7 @@ def represent_odict(dump, tag, mapping, flow_style=None):
         value.append((node_key, node_value))
     if flow_style is None:
         if dump.default_flow_style is not None:
-            node.flow_styledefault_flow_style
+            node.flow_style = dump.default_flow_style
         else:
             node.flow_style = best_style
     return node
