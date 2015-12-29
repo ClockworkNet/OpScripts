@@ -37,10 +37,7 @@ classifiers = ["License :: OSI Approved :: MIT License",
                "Programming Language :: Python :: 2.7",
                "Programming Language :: Python :: Implementation :: CPython"]
 packages = find_packages(".")
-print "--"
-from pprint import pprint
-pprint(packages)
-print "--"
+
 # Install config file appropriately
 etc_path = "etc/opscripts"
 examples_path = "examples"
