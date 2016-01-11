@@ -39,16 +39,11 @@ classifiers = ["License :: OSI Approved :: MIT License",
 packages = find_packages(".")
 
 # Install config file appropriately
-etc_path = "etc/opscripts"
 examples_path = "examples"
 if hasattr(sys, "real_prefix"):
-    etc_path = os.path.join(sys.prefix, etc_path)
     examples_path = os.path.join(sys.prefix, examples_path)
 elif "--user" in sys.argv:
-    etc_path = os.path.join(site.USER_BASE, etc_path)
     examples_path = os.path.join(site.USER_BASE, examples_path)
-else:
-    etc_path = os.path.join("/", etc_path)
 
 setup(name="OpScripts",
       version=metadata["version"],
@@ -59,8 +54,7 @@ setup(name="OpScripts",
       long_description=long_description,
       url=metadata["url"],
       packages=packages,
-      data_files=[(examples_path, ["script_template.py"]),
-                  (etc_path, [".placeholder"])],
+      data_files=[(examples_path, ["script_template.py"])],
       keywords="CLI, DevOps, Ops, sysadmin, Systems administration",
       classifiers=classifiers,
       download_url="https://github.com/ClockworkNet/OpScripts/releases",
