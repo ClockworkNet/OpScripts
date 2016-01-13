@@ -42,9 +42,11 @@ Dependencies
 - ``opscripts.yaml``
 
   - `PyYAML`_
+  - `ordereddict`_ (only required by Python 2.6)
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
 .. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
+.. _`ordereddict`: https://pypi.python.org/pypi/ordereddict/1.1
 
 
 License
