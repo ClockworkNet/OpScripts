@@ -6,9 +6,12 @@
 
 # Standard library
 from __future__ import print_function
-from collections import OrderedDict
 import logging
 import sys
+try:
+    from collections import OrderedDict     # Python 2.7+
+except ImportError:
+    from ordereddict import OrderedDict     # Python 2.6
 
 # Third-party
 import yaml
