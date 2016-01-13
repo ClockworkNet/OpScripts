@@ -7,11 +7,13 @@ Python libraries to assist with writing Linux Ops scripts.
 Python Version Target
 =====================
 
-This library currently targets Python version 2.6. It has been tested with the
-following version of Python:
+This library currently targets Python version 2.6.
+
+It has been tested with the following version of Python:
 
 - 2.6.5
 - 2.7.3, 2.7.6
+- 3.4.3
 
 
 API Versioning
