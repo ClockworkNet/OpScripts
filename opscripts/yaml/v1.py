@@ -3,6 +3,9 @@
 """OpScripts PyYAML utility functions.
 """
 
+# Standard library
+from __future__ import absolute_import, division, print_function
+
 # Third-party
 import yaml
 

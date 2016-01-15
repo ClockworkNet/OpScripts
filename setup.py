@@ -1,11 +1,15 @@
 # vim: set fileencoding=utf-8 :
+
 """python-opscripts setup
 """
+
 # Standard library
+from __future__ import absolute_import, division, print_function
 import os.path
 import re
 import site
 import sys
+
 # Third-party
 from setuptools import find_packages, setup
 
@@ -30,12 +34,19 @@ with open("opscripts/__init__.py", "rb") as f:
 with open("README.rst", "rb") as f:
     long_description = f.read().decode("utf-8")
 install_requires = ["ConfigArgParse"]
-classifiers = ["License :: OSI Approved :: MIT License",
+classifiers = ["Environment :: Console",
+               "Intended Audience :: System Administrators",
+               "License :: OSI Approved :: MIT License",
                "Natural Language :: English",
+               "Operating System :: POSIX :: Linux",
                "Programming Language :: Python :: 2",
                "Programming Language :: Python :: 2.6",
                "Programming Language :: Python :: 2.7",
-               "Programming Language :: Python :: Implementation :: CPython"]
+               "Programming Language :: Python :: 3",
+               "Programming Language :: Python :: 3.4",
+               "Programming Language :: Python :: Implementation :: CPython",
+               "Topic :: Software Development :: Libraries :: Python Modules",
+               "Topic :: System :: Systems Administration"]
 packages = find_packages(".")
 
 # Install config file appropriately
