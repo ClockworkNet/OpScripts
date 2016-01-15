@@ -7,7 +7,6 @@
 # Standard library
 from __future__ import absolute_import, division, print_function
 import logging
-import sys
 try:
     from collections import OrderedDict     # Python 2.7+
 except ImportError:
@@ -19,7 +18,7 @@ import yaml
 # Local/library specific
 from opscripts.config import v2 as ops_config
 from opscripts.logging import v1 as ops_logging
-from opscripts.utils import v1 as ops_utils
+from opscripts.utils import v2 as ops_utils
 from opscripts.yaml import v1 as ops_yaml
 
 
@@ -56,6 +55,8 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print()
-        LOG.info("halted via KeyboardInterrupt.")
-        sys.exit(130)
+        ops_utils.log_ctrlc_and_exit()
+    except ops_utils.Fatal:
+        ops_utils.log_fatal_and_exit()
+    except:
+        ops_utils.log_exception_and_exit()
