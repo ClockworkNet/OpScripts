@@ -11,6 +11,7 @@ try:
     from collections import OrderedDict     # Python 2.7+
 except ImportError:
     from ordereddict import OrderedDict     # Python 2.6
+import sys
 
 # Third-party
 import yaml
@@ -54,6 +55,8 @@ def main():
 if __name__ == "__main__":
     try:
         main()
+    except SystemExit as e:
+        sys.exit(e.code)
     except KeyboardInterrupt:
         ops_utils.log_ctrlc_and_exit()
     except ops_utils.Fatal:
