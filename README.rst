@@ -26,7 +26,7 @@ For example::
 
     from opscripts.config import v2 as ops_config
     from opscripts.logging import v1 as ops_logging
-    from opscripts.utils import v1 as ops_utils
+    from opscripts.utils import v2 as ops_utils
     from opscripts.yaml import v1 as ops_yaml
 
 For a more in-depth example, see the `<script_template.py>`_.
