@@ -42,7 +42,7 @@ def OpsConfigArgParse(**kwargs):
 
     if "config" in add_args and add_args["config"] is True:
         cap.add_argument("-c", "--config", is_config_file=True,
-                         help="Config file path. Default:"
+                         help="Config file path. Default: {0}"
                          .format(default_conf_path))
     if "dryrun" in add_args and add_args["dryrun"] is True:
         cap.add_argument("-n", "--dryrun", action="store_true",
