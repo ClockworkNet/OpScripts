@@ -30,9 +30,9 @@ For example::
 
 For a more in-depth examples, see the:
 
-- `<script_template.py>`_.
-- `<example_notify_email.py>`_.
-- `<example_yaml.py>`_.
+- `<script_template.py>`_
+- `<example_notify_email.py>`_
+- `<example_yaml.py>`_
 
 
 Dependencies
