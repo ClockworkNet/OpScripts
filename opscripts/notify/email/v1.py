@@ -40,7 +40,7 @@ class Message():
             self.headers["X-Mailer"] = program_name
         if "subject" in headers_keys:
             raise ValueError("The headers argument must not contain"
-                            " \"Subject\". It must be set via the subject"
+                             " \"Subject\". It must be set via the subject"
                              " argument.")
         else:
             self.headers["Subject"] = subject
