@@ -24,12 +24,15 @@ impacting the function and stability of the scripts that use them.
 
 For example::
 
-    from opscripts.config import v2 as ops_config
+    from opscripts.config import v3 as ops_config
     from opscripts.logging import v1 as ops_logging
     from opscripts.utils import v2 as ops_utils
-    from opscripts.yaml import v1 as ops_yaml
 
-For a more in-depth example, see the `<script_template.py>`_.
+For a more in-depth examples, see the:
+
+- `<script_template.py>`_.
+- `<example_notify_email.py>`_.
+- `<example_yaml.py>`_.
 
 
 Dependencies
