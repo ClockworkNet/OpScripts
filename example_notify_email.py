@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # vim: set fileencoding=utf-8 :
 
-"""Script_description_goes_here
-"""
-
 # Standard library
 from __future__ import absolute_import, division, print_function
 import logging
@@ -13,6 +10,7 @@ import sys
 from opscripts.config import v3 as ops_config
 from opscripts.logging import v1 as ops_logging
 from opscripts.utils import v2 as ops_utils
+from opscripts.notify.email import v1 as ops_notify_email
 
 
 LOG = logging.getLogger(__name__)
@@ -23,24 +21,22 @@ def setup():
 
     Return configargsparse namespace.
     """
-    add_args = {"config": True, "dryrun": True, "verbose": True}
+    add_args = {"EMAIL": True, "dryrun": True, "verbose": True}
     cap = ops_config.OpsConfigArgParse(description=__doc__, add_args=add_args)
     logger = ops_logging.OpScriptsLogging(cap.prog)
     args = cap.parse_args()
     args.program_name = cap.prog
-    logger.dryrun(args.dryrun)
     logger.set_log_level_verbose(args.verbose)
-    logger.remove_syslog_handler()
-    LOG.warning("disabled logging to syslog")
+    logger.dryrun(args.dryrun)
     return args
 
 
 def main():
     args = setup()
-    ops_utils.verify_root()
-    ops_utils.request_confirmation(timeout=20)
-    LOG.critical("test message to demonstrate use of logging module root"
-                 " logger")
+    subject = "Test - disregard"
+    body = "This is a test message"
+    message = ops_notify_email.Message(args.program_name, subject, body)
+    message.send(args.email_from, args.email_to, dryrun=args.dryrun)
 
 
 if __name__ == "__main__":
@@ -53,4 +49,5 @@ if __name__ == "__main__":
     except ops_utils.Fatal:
         ops_utils.log_fatal_and_exit()
     except:
-        ops_utils.log_exception_and_exit()
+        raise
+#        ops_utils.log_exception_and_exit()

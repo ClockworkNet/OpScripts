@@ -11,6 +11,9 @@ import sys
 # Third-party
 import configargparse
 
+# Local/library specific
+from opscripts.notify.email import v1 as ops_notify_email
+
 
 def OpsConfigArgParse(**kwargs):
     """Wrap configargparse.ArgumentParser so that:
@@ -53,16 +56,19 @@ def OpsConfigArgParse(**kwargs):
         cap.add_argument("-n", "--dryrun", action="store_true",
                          help="Dry run: do not make any changes.")
     if "email-from" in add_args and add_args["email-from"] is True:
-        cap.add_argument("--email-from", metavar="EMAIL",
+        cap.add_argument("--email-from", metavar="EMAIL", required=True,
                          help="Email sender.")
     if "email-host" in add_args and add_args["email-host"] is True:
-        cap.add_argument("--email-host", metavar="HOST", default="localhost",
+        cap.add_argument("--email-host", metavar="HOST",
+                         default=ops_notify_email.DEFAULT_HOST,
                          help="Email host used to send messages.")
     if "email-port" in add_args and add_args["email-port"] is True:
-        cap.add_argument("--email-port", metavar="PORT", type=int, default=25,
+        cap.add_argument("--email-port", metavar="PORT", type=int,
+                         default=ops_notify_email.DEFAULT_PORT,
                          help="Email port used to send messages.")
     if "email-to" in add_args and add_args["email-to"] is True:
         cap.add_argument("--email-to", metavar="EMAILS", action="append",
+                         required=True,
                          help="Email recipients. May be specified multiple"
                          " times.")
     if "quiet" in add_args and add_args["quiet"] is True:

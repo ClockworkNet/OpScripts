@@ -5,12 +5,22 @@
 
 # Standard library
 from __future__ import absolute_import, division, print_function
-from six import iteritems
+import os
 import smtplib
+import socket
+
+# Local/library specific
+from opscripts.utils import v2 as ops_utils
+
+
+DEFAULT_HOST = "localhost"
+DEFAULT_PORT = 25
 
 
 class Message():
     def __init__(self, program_name, subject, body, headers=dict()):
+        """Initialize message object and verify arguments.
+        """
         self.body = "{0}\n".format(body.strip())
         self.headers = headers
         headers_keys = list()
@@ -37,21 +47,44 @@ class Message():
         if "auto-submitted" not in headers_keys:
             self.headers["Auto-Submitted"] = "auto-replied"
 
-    def _compile_message(self, sender, rcpts):
+    def _compile_message(self, sender, recipients):
+        """Compile message from headers list (with sender and recipients
+        added) and body.
+        """
         headers = self.headers
-        headers["To"] = ", ".join(rcpts)
+        headers["To"] = ", ".join(recipients)
         headers["From"] = sender
         email_message = ""
-        for header, value in iteritems(headers):
-            email_message = "{0}\n{1}: {2}".format(email_message, header,
-                                                   value)
+        headers_keys = headers.keys()
+        for key in headers_keys:
+            email_message = "{0}\n{1}: {2}".format(email_message, key,
+                                                   headers[key])
         return "{0}\n\n{1}".format(email_message.strip(), self.body)
 
-    def send(self, sender, rcpts, host="localhost", port=25, dryrun=False):
-        email_message = self._compile_message(sender, rcpts)
+    def send(self, sender, recipients, host=DEFAULT_HOST, port=DEFAULT_PORT,
+             dryrun=False):
+        """Send compiled message via SMTP host:port.
+        """
+        email_message = self._compile_message(sender, recipients)
         if dryrun:
             print(email_message)
         else:
-            s = smtplib.SMTP(host, port)
-            s.sendmail(sender, rcpts, email_message)
-            s.quit()
+            s = None
+            try:
+                s = smtplib.SMTP(host, port)
+                s.sendmail(sender, recipients, email_message)
+            except socket.error as e:
+                #  8 nodename nor servname provided, or not known
+                # 61 Connection refused
+                if e.errno in (8, 61):
+                    err_msg = ("Unable to connect to {0}:{1} - socket error"
+                               " {2}: {3}."
+                               .format(host, port, e.errno, e.strerror)
+                    raise ops_utils.Fatal(err_msg, os.EX_UNAVAILABLE)
+                else:
+                    raise
+            except:
+                raise
+            finally:
+                if s:
+                    s.quit()
