@@ -49,5 +49,4 @@ if __name__ == "__main__":
     except ops_utils.Fatal:
         ops_utils.log_fatal_and_exit()
     except:
-        raise
-#        ops_utils.log_exception_and_exit()
+        ops_utils.log_exception_and_exit()

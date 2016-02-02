@@ -79,7 +79,7 @@ class Message():
                 if e.errno in (8, 61):
                     err_msg = ("Unable to connect to {0}:{1} - socket error"
                                " {2}: {3}."
-                               .format(host, port, e.errno, e.strerror)
+                               .format(host, port, e.errno, e.strerror))
                     raise ops_utils.Fatal(err_msg, os.EX_UNAVAILABLE)
                 else:
                     raise
