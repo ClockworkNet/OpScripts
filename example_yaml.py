@@ -16,7 +16,7 @@ import yaml
 # Local/library specific
 from opscripts.config import v3 as ops_config
 from opscripts.logging import v1 as ops_logging
-from opscripts.utils import v2 as ops_utils
+from opscripts.utils import v3 as ops_utils
 from opscripts.yaml import v1 as ops_yaml
 
 
