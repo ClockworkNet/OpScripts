@@ -14,9 +14,9 @@ except ImportError:
 import yaml
 
 # Local/library specific
-from opscripts.config import v3 as ops_config
-from opscripts.logging import v1 as ops_logging
-from opscripts.utils import v3 as ops_utils
+from opscripts.config import v4 as ops_config
+from opscripts.logging import v2 as ops_logging
+from opscripts.utils import v4 as ops_utils
 from opscripts.yaml import v1 as ops_yaml
 
 
@@ -29,11 +29,14 @@ def setup():
 
     Return configargsparse namespace.
     """
-    cap = ops_config.OpsConfigArgParse(description=__doc__)
+    add_args = {"config": True, "verbosity": True}
+    cap = ops_config.OpsConfigArgParse(description=__doc__, add_args=add_args)
     logger = ops_logging.OpScriptsLogging(cap.prog)
     args = cap.parse_args()
     args.program_name = cap.prog
+    logger.set_log_level(args.verbosity)
     logger.remove_syslog_handler()
+    LOG.info("disabled logging to syslog")
     return args
 
 

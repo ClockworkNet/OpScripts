@@ -24,9 +24,9 @@ impacting the function and stability of the scripts that use them.
 
 For example::
 
-    from opscripts.config import v3 as ops_config
-    from opscripts.logging import v1 as ops_logging
-    from opscripts.utils import v3 as ops_utils
+    from opscripts.config import v4 as ops_config
+    from opscripts.logging import v2 as ops_logging
+    from opscripts.utils import v4 as ops_utils
 
 For a more in-depth examples, see the:
 
