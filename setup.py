@@ -58,8 +58,7 @@ if hasattr(sys, "real_prefix"):
     examples_path = os.path.join(sys.prefix, examples_path)
 elif "--user" in sys.argv:
     examples_path = os.path.join(site.USER_BASE, examples_path)
-examples = glob.glob(os.path.join(setup_path, "example_*.py"))
-examples += [os.path.join(setup_path, "script_template.py")]
+examples = glob.glob(os.path.join(setup_path, "example*.py"))
 
 setup(name="OpScripts",
       version=metadata["version"],
