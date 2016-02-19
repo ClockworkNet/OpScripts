@@ -10,7 +10,7 @@ import logging
 import sys
 
 # Local/library specific
-from opscripts.config import v4 as ops_config
+from opscripts.config import v5 as ops_config
 from opscripts.logging import v2 as ops_logging
 from opscripts.utils import v4 as ops_utils
 
@@ -26,12 +26,12 @@ def setup():
     add_args = {"config": True, "dryrun": True, "verbosity": True}
     cap = ops_config.OpsConfigArgParse(description=__doc__, add_args=add_args)
     logger = ops_logging.OpScriptsLogging(cap.prog)
-    args = cap.parse_args()
-    args.program_name = cap.prog
+    args = ops_config.parse_args(cap)
     logger.dryrun(args.dryrun)
     logger.set_log_level(args.verbosity)
     logger.remove_syslog_handler()
     LOG.warning("disabled logging to syslog")
+    LOG.debug("args.program_name: {}".format(args.program_name))
     return args
 
 

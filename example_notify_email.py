@@ -7,9 +7,9 @@ import logging
 import sys
 
 # Local/library specific
-from opscripts.config import v4 as ops_config
+from opscripts.config import v5 as ops_config
 from opscripts.logging import v2 as ops_logging
-from opscripts.notify.email import v1 as ops_notify_email
+from opscripts.notify.email import v2 as ops_notify_email
 from opscripts.utils import v4 as ops_utils
 
 
@@ -25,8 +25,7 @@ def setup():
                 "verbosity": True}
     cap = ops_config.OpsConfigArgParse(description=__doc__, add_args=add_args)
     logger = ops_logging.OpScriptsLogging(cap.prog)
-    args = cap.parse_args()
-    args.program_name = cap.prog
+    args = ops_config.parse_args(cap)
     logger.set_log_level(args.verbosity)
     logger.dryrun(args.dryrun)
     return args
