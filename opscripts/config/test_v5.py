@@ -3,6 +3,11 @@
 """Unit Tests
 """
 
+# TODO:
+# - configargparse functionality
+#   - config file
+#   - environment
+
 # Standard Library
 from __future__ import absolute_import, division, print_function
 import os.path
@@ -42,6 +47,20 @@ def test_config_basic(prog):
     assert args.program_name == prog
     assert "verbosity" in args
     assert args.verbosity is None
+
+
+def test_config_verbosity():
+    # GIVEN ops_config initialization
+    add_args = {"verbosity": True}
+    cap = ops_config.OpsConfigArgParse(add_args=add_args)
+    # WHEN command line has ten quiet flags and ten verbose flags
+    cmd_args = ["-q"] * 5 + ["-v"] * 5
+    verbosity = [10] * 5 + [-10] * 5
+    # THEN parsing the arguments should raise an exception because neither
+    #      --dryrun nor --email-from and --email-to were specified
+    args = ops_config.parse_args(cap, args=cmd_args)
+    assert "verbosity" in args
+    assert args.verbosity == verbosity
 
 
 def test_config_email_missing_required():
