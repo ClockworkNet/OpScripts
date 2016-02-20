@@ -50,7 +50,8 @@ classifiers = ["Environment :: Console",
                "Programming Language :: Python :: Implementation :: CPython",
                "Topic :: Software Development :: Libraries :: Python Modules",
                "Topic :: System :: Systems Administration"]
-packages = find_packages(".")
+packages = find_packages(".", exclude=("test_*"))
+
 
 # Install config file appropriately
 examples_path = "examples"
