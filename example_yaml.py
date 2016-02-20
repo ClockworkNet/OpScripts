@@ -40,7 +40,7 @@ def setup():
 
 
 def main():
-    args = setup()
+    args = setup()  # noqa
     doc = OrderedDict()
     doc["one"] = "alfa"
     doc["two"] = ["bravo", "charlie", "delta"]

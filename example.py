@@ -36,7 +36,7 @@ def setup():
 
 
 def main():
-    args = setup()
+    args = setup()  # noqa
     ops_utils.verify_root()
     ops_utils.request_confirmation(timeout=20)
     LOG.critical("test message to demonstrate use of logging module root"
