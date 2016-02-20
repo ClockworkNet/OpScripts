@@ -15,8 +15,7 @@ class OpScriptsLogging(object):
     """
 
     def __init__(self, program_name, log_level=logging.WARNING):
-        """Initialize logging with screen and syslog handlers. Return logger
-        dictionary.
+        """Initialize logging with screen and syslog handlers.
         """
         # Set up the logging system
         self.logger = logging.getLogger()
