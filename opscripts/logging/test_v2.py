@@ -10,82 +10,78 @@ import os.path
 import sys
 
 # Third-party
-from nose.tools import assert_equal, with_setup
+import pytest
 
 # Local/library specific
 from . import v2 as ops_logging
 
 
-LOG_LEVEL = None
-LOGGER = None
-
-
-def setup_module(module):
-    global LOG_LEVEL
-    LOG_LEVEL = logging.getLogger().getEffectiveLevel()
-
-
-def teardown_module(module):
-    pass
-
-
-def setup_function():
-    global LOGGER
+@pytest.fixture(scope="function")
+def opslog(request):
+    log_level = logging.getLogger().getEffectiveLevel()
     prog = os.path.basename(sys.argv[0])
-    LOGGER = ops_logging.OpScriptsLogging(prog)
+    opslog = ops_logging.OpScriptsLogging(prog)
+
+    def teardown():
+        opslog.logger.removeHandler(opslog.handler_screen)
+        opslog.logger.removeHandler(opslog.handler_syslog)
+        opslog.logger.setLevel(log_level)
+
+    request.addfinalizer(teardown)
+
+    return opslog
 
 
-def teardown_function():
-    global LOGGER
-    LOGGER.logger.removeHandler(LOGGER.handler_screen)
-    LOGGER.logger.removeHandler(LOGGER.handler_syslog)
-    LOGGER.logger.setLevel(LOG_LEVEL)
-    del LOGGER
-
-
-@with_setup(setup_function, teardown_function)
-def test_handler_creation():
+def test_logger_instance_creation(opslog):
     # GIVEN ops_logging initialization
     # WHEN nothine else is done
-    # THEN there should be three handlers (nose, screen, and syslog) and
-    #      the log level should be WARNING
-    assert_equal(len(LOGGER.logger.handlers), 3)
-    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.WARNING)
+    # THEN there should be no filters and
+    #      there should be three handlers and
+    #      the screen handler should be present and
+    #      the syslog handler should be present and
+    #      the log level should be 30 WARNING
+    assert (len(opslog.logger.filters) == 0 and
+            len(opslog.logger.handlers) == 2 and
+            opslog.handler_screen in opslog.logger.handlers and
+            opslog.handler_syslog in opslog.logger.handlers and
+            opslog.logger.getEffectiveLevel() == logging.WARNING)
 
 
-@with_setup(setup_function, teardown_function)
-def test_dryrun():
+def test_dryrun(opslog):
     # GIVEN ops_logging initialization
     # WHEN dryrun function is invoked with True
-    LOGGER.dryrun(True)
-    # THEN there should be two handlers (nose and screeng)
-    assert_equal(len(LOGGER.logger.handlers), 2)
+    opslog.dryrun(True)
+    # THEN there should be one handler and
+    #      the screen handler should be present
+    assert (len(opslog.logger.handlers) == 1 and
+            opslog.logger.handlers[0] == opslog.handler_screen)
 
 
-@with_setup(setup_function, teardown_function)
-def test_set_log_level__maximum_log_level():
+def test_set_log_level__num_log_level_above_max(opslog):
     # GIVEN ops_logging initialization
-    # WHEN set_log_level function is invoked with a verbosity well above the
-    #      maximum
-    LOGGER.set_log_level([100])
+    # WHEN set_log_level function is invoked with a verbosity total well above
+    #      the maximum allowed by the function (50 CRITICAL)
+    ten_quiet_flags = [10] * 10
+    opslog.set_log_level(ten_quiet_flags)
     # THEN the log level should be CRITICAL
-    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.CRITICAL)
+    assert opslog.logger.getEffectiveLevel() == logging.CRITICAL
 
 
-@with_setup(setup_function, teardown_function)
-def test_set_log_level__minimum_log_level():
+def test_set_log_level__num_log_level_below_min(opslog):
     # GIVEN ops_logging initialization
-    # WHEN set_log_level function is invoked with a verbosity well below the
-    #      minimum
-    LOGGER.set_log_level([-100])
+    # WHEN set_log_level function is invoked with a verbosity total well below
+    #      the minimum allowed by the function (10 DEBUG)
+    ten_verbose_flags = [-10] * 10
+    opslog.set_log_level(ten_verbose_flags)
     # THEN the log level should be DEBUG
-    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.DEBUG)
+    assert opslog.logger.getEffectiveLevel() == logging.DEBUG
 
 
-@with_setup(setup_function, teardown_function)
-def test_remove_syslog_handler():
+def test_remove_syslog_handler(opslog):
     # GIVEN ops_logging initialization
     # WHEN remove_syslog_handler function is invoked
-    LOGGER.remove_syslog_handler()
-    # THEN there should be two handlers (nose and screeng)
-    assert_equal(len(LOGGER.logger.handlers), 2)
+    opslog.remove_syslog_handler()
+    # THEN there should be one handler and
+    #      the screen handler should be present
+    assert (len(opslog.logger.handlers) == 1 and
+            opslog.logger.handlers[0] == opslog.handler_screen)
