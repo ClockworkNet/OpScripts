@@ -10,7 +10,7 @@ import os.path
 import sys
 
 # Third-party
-from nose.tools import with_setup
+from nose.tools import assert_equal, with_setup
 
 # Local/library specific
 from . import v2 as ops_logging
@@ -49,8 +49,8 @@ def test_handler_creation():
     # WHEN nothine else is done
     # THEN there should be three handlers (nose, screen, and syslog) and
     #      the log level should be WARNING
-    assert (len(LOGGER.logger.handlers) == 3 and
-            LOGGER.logger.getEffectiveLevel() == logging.WARNING)
+    assert_equal(len(LOGGER.logger.handlers), 3)
+    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.WARNING)
 
 
 @with_setup(setup_function, teardown_function)
@@ -59,27 +59,27 @@ def test_dryrun():
     # WHEN dryrun function is invoked with True
     LOGGER.dryrun(True)
     # THEN there should be two handlers (nose and screeng)
-    assert len(LOGGER.logger.handlers) == 2
+    assert_equal(len(LOGGER.logger.handlers), 2)
 
 
 @with_setup(setup_function, teardown_function)
-def test_set_log_level_too_quiet():
+def test_set_log_level__maximum_log_level():
     # GIVEN ops_logging initialization
     # WHEN set_log_level function is invoked with a verbosity well above the
     #      maximum
     LOGGER.set_log_level([100])
     # THEN the log level should be CRITICAL
-    assert LOGGER.logger.getEffectiveLevel() == logging.CRITICAL
+    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.CRITICAL)
 
 
 @with_setup(setup_function, teardown_function)
-def test_set_log_level_too_verbose():
+def test_set_log_level__minimum_log_level():
     # GIVEN ops_logging initialization
     # WHEN set_log_level function is invoked with a verbosity well below the
     #      minimum
     LOGGER.set_log_level([-100])
     # THEN the log level should be DEBUG
-    assert LOGGER.logger.getEffectiveLevel() == logging.DEBUG
+    assert_equal(LOGGER.logger.getEffectiveLevel(), logging.DEBUG)
 
 
 @with_setup(setup_function, teardown_function)
@@ -88,4 +88,4 @@ def test_remove_syslog_handler():
     # WHEN remove_syslog_handler function is invoked
     LOGGER.remove_syslog_handler()
     # THEN there should be two handlers (nose and screeng)
-    assert len(LOGGER.logger.handlers) == 2
+    assert_equal(len(LOGGER.logger.handlers), 2)
