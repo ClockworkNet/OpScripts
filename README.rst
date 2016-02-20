@@ -50,7 +50,7 @@ Dependencies
   - `PyYAML`_
   - `ordereddict`_ (only required by Python 2.6)
 
-- Testing
+- Unit Tests
 
   - `pytest`_
   - `pytest-flakes`_
