@@ -97,11 +97,11 @@ def OpsConfigArgParse(**kwargs):
     return cap
 
 
-def parse_args(cap):
+def parse_args(cap, args=None, namespace=None):
     """Wrap parse_args to allow additional logic:
     - Only require --email_from/--email-to when not doing a dryrun
     """
-    args = cap.parse_args()
+    args = cap.parse_args(args=args, namespace=namespace)
     if "dryrun" in args and "email_from" in args:
         if not args.dryrun:
             if not args.email_from:

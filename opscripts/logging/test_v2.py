@@ -1,6 +1,6 @@
 # vim: set fileencoding=utf-8 :
 
-"""Test for OpScripts logging library
+"""Unit Tests
 """
 
 # Standard Library
@@ -40,11 +40,11 @@ def test_logger_instance_creation(opslog):
     #      the screen handler should be present and
     #      the syslog handler should be present and
     #      the log level should be 30 WARNING
-    assert (len(opslog.logger.filters) == 0 and
-            len(opslog.logger.handlers) == 2 and
-            opslog.handler_screen in opslog.logger.handlers and
-            opslog.handler_syslog in opslog.logger.handlers and
-            opslog.logger.getEffectiveLevel() == logging.WARNING)
+    assert len(opslog.logger.filters) == 0
+    assert len(opslog.logger.handlers) == 2
+    assert opslog.handler_screen in opslog.logger.handlers
+    assert opslog.handler_syslog in opslog.logger.handlers
+    assert opslog.logger.getEffectiveLevel() == logging.WARNING
 
 
 def test_dryrun(opslog):
@@ -53,8 +53,8 @@ def test_dryrun(opslog):
     opslog.dryrun(True)
     # THEN there should be one handler and
     #      the screen handler should be present
-    assert (len(opslog.logger.handlers) == 1 and
-            opslog.logger.handlers[0] == opslog.handler_screen)
+    assert len(opslog.logger.handlers) == 1
+    assert opslog.logger.handlers[0] == opslog.handler_screen
 
 
 def test_set_log_level__num_log_level_above_max(opslog):
@@ -83,5 +83,5 @@ def test_remove_syslog_handler(opslog):
     opslog.remove_syslog_handler()
     # THEN there should be one handler and
     #      the screen handler should be present
-    assert (len(opslog.logger.handlers) == 1 and
-            opslog.logger.handlers[0] == opslog.handler_screen)
+    assert len(opslog.logger.handlers) == 1
+    assert opslog.logger.handlers[0] == opslog.handler_screen
