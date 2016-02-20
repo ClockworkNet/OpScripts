@@ -6,7 +6,6 @@
 # Standard Library
 from __future__ import absolute_import, division, print_function
 import logging
-import operator
 import os
 import random
 import select
