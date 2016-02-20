@@ -4,16 +4,19 @@ OpScripts
 Python libraries to assist with writing Linux Ops scripts.
 
 
-Python Version Target
-=====================
+Python Compatiblity
+===================
 
-This library currently targets Python version 2.6.
+This library currently requires compatibility with:
 
-It has been tested with the following version of Python:
+- 2.6
+- 2.7
+- 3.4
 
-- 2.6.5
-- 2.7.3, 2.7.6
-- 3.4.3
+However, additional versions are tested automatically:
+
+.. image:: https://travis-ci.org/ClockworkNet/OpScripts.svg?branch=master
+    :target: https://travis-ci.org/ClockworkNet/OpScripts
 
 
 API Versioning
