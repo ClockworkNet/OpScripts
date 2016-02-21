@@ -18,13 +18,17 @@ DEFAULT_PORT = 25
 
 
 class Message():
-    def __init__(self, program_name, subject, body, headers=dict()):
+    def __init__(self, program_name=None, subject=None, body=None,
+                 headers=None):
         """Initialize message object and verify arguments.
         """
         self.body = "{0}\n".format(body.strip())
-        self.headers = headers
+        if headers:
+            self.headers = headers
+        else:
+            self.headers = dict()
         headers_keys = list()
-        for key in headers.keys():
+        for key in self.headers.keys():
             headers_keys.append(key.lower())
         if "to" in headers_keys:
             raise ValueError("The headers argument must not contain \"To\"."
