@@ -36,24 +36,22 @@ def test_logger_instance_creation(opslog):
     # GIVEN ops_logging initialization
     # WHEN nothine else is done
     # THEN there should be no filters and
-    #      there should be three handlers and
+    #      there should be three handlers (capslog, screen, syslog) and
     #      the screen handler should be present and
     #      the syslog handler should be present and
-    #      the log level should be 30 WARNING
     assert len(opslog.logger.filters) == 0
-    assert len(opslog.logger.handlers) == 2
+    assert len(opslog.logger.handlers) == 3
     assert opslog.handler_screen in opslog.logger.handlers
     assert opslog.handler_syslog in opslog.logger.handlers
-    assert opslog.logger.getEffectiveLevel() == logging.WARNING
 
 
 def test_dryrun(opslog):
     # GIVEN ops_logging initialization
     # WHEN dryrun function is invoked with True
     opslog.dryrun(True)
-    # THEN there should be one handler and
+    # THEN there should be two handlers (capslog and screen) and
     #      the screen handler should be present
-    assert len(opslog.logger.handlers) == 1
+    assert len(opslog.logger.handlers) == 2
     assert opslog.logger.handlers[0] == opslog.handler_screen
 
 
@@ -81,7 +79,7 @@ def test_remove_syslog_handler(opslog):
     # GIVEN ops_logging initialization
     # WHEN remove_syslog_handler function is invoked
     opslog.remove_syslog_handler()
-    # THEN there should be one handler and
+    # THEN there should be two handlers (capslog and screen) and
     #      the screen handler should be present
-    assert len(opslog.logger.handlers) == 1
+    assert len(opslog.logger.handlers) == 2
     assert opslog.logger.handlers[0] == opslog.handler_screen
