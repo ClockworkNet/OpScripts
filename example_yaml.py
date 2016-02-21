@@ -45,6 +45,7 @@ def main():
     doc["one"] = "alfa"
     doc["two"] = ["bravo", "charlie", "delta"]
     doc["three"] = "echo"
+    doc["four"] = {"apple": "fruit", "bear": "mammal", "carrot": "vegetable"}
     print(yaml.safe_dump(doc, indent=4, default_flow_style=False))
 
 
