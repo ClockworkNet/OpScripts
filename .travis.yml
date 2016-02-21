@@ -10,6 +10,6 @@ python:
   - "3.5-dev" # 3.5 development branch
   - "nightly" # currently points to 3.6-dev
 install:
-- "pip install ConfigArgParse ordereddict PyYAML pytest-flakes pytest-pep8"
+- "pip install -r test_requirements.txt"
 script:
 - py.test

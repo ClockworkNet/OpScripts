@@ -1,0 +1,7 @@
+# vim: set ft=conf:
+ConfigArgParse >= 0.10.0
+PyYAML >= 3.11
+ordereddict >= 1.1 ; python_version < '2.7'
+pytest >= 2.8
+pytest-flakes >= 1.0.1
+pytest-pep8 >= 1.0.6
