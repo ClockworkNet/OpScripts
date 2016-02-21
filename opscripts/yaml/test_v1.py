@@ -14,7 +14,7 @@ except ImportError:
 import yaml
 
 # Local/library specific
-from . import v1 as ops_yaml
+from opscripts.yaml import v1 as ops_yaml
 
 
 YAML_DOC = """---

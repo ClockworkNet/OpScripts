@@ -13,7 +13,7 @@ import sys
 import pytest
 
 # Local/library specific
-from . import v2 as ops_logging
+from opscripts.logging import v2 as ops_logging
 
 
 @pytest.fixture(scope="function")
