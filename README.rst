@@ -53,14 +53,18 @@ Dependencies
 - Unit Tests
 
   - `pytest`_
+  - `pytest-catchlog`_
   - `pytest-flakes`_
+  - `pytest-localserver`_
   - `pytest-pep8`_
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
 .. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
 .. _`ordereddict`: https://pypi.python.org/pypi/ordereddict/1.1
 .. _`pytest`: http://pytest.org/latest/
+.. _`pytest-catchlog`: https://pypi.python.org/pypi/pytest-catchlog
 .. _`pytest-flakes`: https://pypi.python.org/pypi/pytest-flakes
+.. _`pytest-localserver`: https://pypi.python.org/pypi/pytest-localserver
 .. _`pytest-pep8`: http://pypi.python.org/pypi/pytest-pep8
 
 
