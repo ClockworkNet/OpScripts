@@ -54,6 +54,7 @@ packages = find_packages()
 
 
 # Install config file appropriately
+docs_path = ""
 examples_path = "examples"
 if hasattr(sys, "real_prefix"):
     docs_path = sys.prefix
