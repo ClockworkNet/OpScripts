@@ -50,16 +50,19 @@ classifiers = ["Environment :: Console",
                "Programming Language :: Python :: Implementation :: CPython",
                "Topic :: Software Development :: Libraries :: Python Modules",
                "Topic :: System :: Systems Administration"]
-packages = find_packages(".", exclude=("test_*.py",))
+packages = find_packages()
 
 
 # Install config file appropriately
 examples_path = "examples"
 if hasattr(sys, "real_prefix"):
-    examples_path = os.path.join(sys.prefix, examples_path)
+    docs_path = sys.prefix
 elif "--user" in sys.argv:
-    examples_path = os.path.join(site.USER_BASE, examples_path)
+    docs_path = site.USER_BASE
+examples_path = os.path.join(docs_path, examples_path)
 examples = glob.glob(os.path.join(setup_path, "example*.py"))
+docs = [os.path.join(setup_path, "README.rst"),
+        os.path.join(setup_path, "LICENSE")]
 
 setup(name="OpScripts",
       version=metadata["version"],
@@ -70,7 +73,7 @@ setup(name="OpScripts",
       long_description=long_description,
       url=metadata["url"],
       packages=packages,
-      data_files=[(examples_path, examples)],
+      data_files=[(docs_path, docs), (examples_path, examples)],
       keywords="CLI, DevOps, Ops, sysadmin, Systems administration",
       classifiers=classifiers,
       download_url="https://github.com/ClockworkNet/OpScripts/releases",
