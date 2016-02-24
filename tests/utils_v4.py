@@ -62,8 +62,7 @@ def test_log_ctrlc_and_exit__without_logging(capfd):
     root_logger = logging.getLogger()
     handler = root_logger.handlers[0]
     root_logger.removeHandler(handler)
-    tested = __name__.split(".")
-    tested = ".".join([tested[0], tested[1], tested[2].split("_")[1]])
+    tested = "opscripts.utils.{}".format(__name__.split("_")[1])
     expected_err = ("\nCRITICAL No handlers could be found for logger \"{0}\""
                     "\nINFO (130) Halted via KeyboardInterrupt.\n"
                     .format(tested))

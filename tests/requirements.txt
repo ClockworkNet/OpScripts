@@ -7,3 +7,4 @@ pytest-catchlog >= 1.2.2
 pytest-flakes >= 1.0.1
 pytest-localserver >= 0.3.5
 pytest-pep8 >= 1.0.6
+pytest-pythonpath >= 0.7
