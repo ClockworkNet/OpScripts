@@ -57,6 +57,7 @@ Dependencies
   - `pytest-flakes`_
   - `pytest-localserver`_
   - `pytest-pep8`_
+  - `pytest-pythonpath`_
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
 .. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
@@ -66,6 +67,7 @@ Dependencies
 .. _`pytest-flakes`: https://pypi.python.org/pypi/pytest-flakes
 .. _`pytest-localserver`: https://pypi.python.org/pypi/pytest-localserver
 .. _`pytest-pep8`: http://pypi.python.org/pypi/pytest-pep8
+.. _`pytest-pythonpath`: https://pypi.python.org/pypi/pytest-pythonpath
 
 
 License
