@@ -13,7 +13,7 @@ import pytest
 # Local/library specific
 from opscripts.utils import v4 as ops_utils
 
-
+MODULE = "opscripts.utils.v4"
 DOC = """\
 Alfa        Bravo    Charlie
 ----        -----    -------
@@ -62,10 +62,9 @@ def test_log_ctrlc_and_exit__without_logging(capfd):
     root_logger = logging.getLogger()
     handler = root_logger.handlers[0]
     root_logger.removeHandler(handler)
-    tested = "opscripts.utils.{}".format(__name__.split("_")[1])
     expected_err = ("\nCRITICAL No handlers could be found for logger \"{0}\""
                     "\nINFO (130) Halted via KeyboardInterrupt.\n"
-                    .format(tested))
+                    .format(MODULE))
     # WHEN the ops_utils.log_ctrlc_and_exit function is invoked and
     #      the output is captured
     with pytest.raises(SystemExit) as e:
