@@ -54,6 +54,7 @@ Dependencies
 
   - `pytest`_
   - `pytest-catchlog`_
+  - `pytest-cov`_
   - `pytest-flakes`_
   - `pytest-localserver`_
   - `pytest-pep8`_
@@ -64,6 +65,7 @@ Dependencies
 .. _`ordereddict`: https://pypi.python.org/pypi/ordereddict/1.1
 .. _`pytest`: http://pytest.org/latest/
 .. _`pytest-catchlog`: https://pypi.python.org/pypi/pytest-catchlog
+.. _`pytest-cov`: https://pypi.python.org/pypi/pytest-cov
 .. _`pytest-flakes`: https://pypi.python.org/pypi/pytest-flakes
 .. _`pytest-localserver`: https://pypi.python.org/pypi/pytest-localserver
 .. _`pytest-pep8`: http://pypi.python.org/pypi/pytest-pep8
