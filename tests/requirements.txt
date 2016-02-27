@@ -4,8 +4,9 @@ PyYAML >= 3.11
 ordereddict >= 1.1 ; python_version < '2.7'
 pytest >= 2.8
 pytest-catchlog >= 1.2.2
+pytest-colordots >= 0.1
+pytest-cov >= 2.2.1
 pytest-flakes >= 1.0.1
 pytest-localserver >= 0.3.5
 pytest-pep8 >= 1.0.6
 pytest-pythonpath >= 0.7
-pytest-cov
