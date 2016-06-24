@@ -78,8 +78,11 @@ Testing Quick Start
 1. Change directory into repository (into same directory as where this README
    resides).
 2. Install virtual environment::
+
     mkvirtualenv -a . -r tests/requirements.txt opscripts_test
+
 3. Run pytest::
+
     py.test
 
 
