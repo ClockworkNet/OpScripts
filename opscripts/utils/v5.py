@@ -76,7 +76,7 @@ def exec_cmd_fail_hard(cmd_args, cwd=None, uid=None, gid=None):
 
 
 def exec_cmd_fail_prompt(cmd_args, cwd=None, uid=None, gid=None,
-                            opt_force=None, opt_yes=None):
+                         opt_force=None, opt_yes=None):
     cmd_spec = _exec_cmd_base_spec(cmd_args, cwd, uid, gid)
     results = _exec_cmd_base(cmd_args, cwd, uid, gid)
     if results[0] != 0:
