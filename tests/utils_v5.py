@@ -11,9 +11,9 @@ import logging
 import pytest
 
 # Local/library specific
-from opscripts.utils import v4 as ops_utils
+from opscripts.utils import v5 as ops_utils
 
-MODULE = "opscripts.utils.v4"
+MODULE = "opscripts.utils.v5"
 DOC = """\
 Alfa        Bravo    Charlie
 ----        -----    -------
@@ -21,6 +21,23 @@ apple           1          x
 banana         22  xxxxxxxxx
 Clementine    333         xx\
 """
+
+
+def test_exec_cmd_debug_success():
+    # GIVEN the pwd command with root as the working directory
+    cmd_args = ["pwd"]
+    cwd = "/"
+    uid = None
+    gid = None
+    # WHEN the command is executed
+    exit_status, stdout, stderr = ops_utils.exec_cmd_debug(cmd_args, cwd=cwd,
+                                                           uid=uid, gid=gid)
+    # THEN exit status should be 0 and
+    #      stdout should be root directory ("/")
+    #      stderr should be empty
+    assert exit_status == 0
+    assert stdout == "/"
+    assert stderr == ""
 
 
 def test_format_columns():
