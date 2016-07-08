@@ -8,6 +8,7 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 import random
+import re
 import select
 import subprocess
 import sys
@@ -149,6 +150,42 @@ def format_columns(rows, align=None):
                 formatted.append(str(col).ljust(widths[i]))
         lines.append("  ".join(formatted))
     return lines
+
+
+def is_valid_hostname(hostname):
+    """Validate hostname syntax:
+    - Entire hostname must
+        - not exceed 253 characters
+        - not be all-numeric (so that it can't be confused with an IP address)
+    - Each label must:
+      - contain at least 1 and not more than 63 characters
+      - not begin or end with a hyphen
+      - not contain illegal characters
+
+    http://stackoverflow.com/questions/2532053/validate-a-hostname-string
+    """
+    disallowed = re.compile("[^A-Z\d-]", re.IGNORECASE)
+    # strip exactly one dot from the right, if present
+    if hostname.endswith("."):
+        hostname = hostname[:-1]
+    # hostname must not exceed 253 characters
+    if len(hostname) > 253:
+        return False
+    # hostnbame must be not all-numeric (so that it can't be confused with an
+    # IP address)
+    if re.match(r"[\d.]+$", hostname):
+        return False
+    for label in hostname.split("."):
+        # label must contain at least 1 and not more than 63 characters
+        if len(label) == 0 or len(label) > 63:
+            return False
+        # label must not begin or end with a hyphen
+        if label.startswith("-") or label.endswith("-"):
+            return False
+        # label must not contain illegal characters
+        if disallowed.search(label):
+            return False
+    return True
 
 
 def log_ctrlc_and_exit():
