@@ -39,8 +39,8 @@ def _exec_cmd_base(cmd_args, cwd=None, uid=None, gid=None):
                            stderr=subprocess.PIPE,
                            preexec_fn=switch_uid_gid)
     exit_status = job.wait()
-    stdout = job.stdout.read().strip()
-    stderr = job.stderr.read().strip()
+    stdout = job.stdout.read().strip().decode("utf-8")
+    stderr = job.stderr.read().strip().decode("utf-8")
     return [exit_status, stdout, stderr]
 
 
