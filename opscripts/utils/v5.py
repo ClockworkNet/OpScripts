@@ -24,17 +24,12 @@ class Fatal(Exception):
         super(Fatal, self).__init__(message)
 
 
-def check_logging():
-    """Check for logging handlers.
-    """
-    if LOG.handlers:
-        return True
-    elif logging.getLogger().handlers:
-        return True
-    return False
-
-
 def _exec_cmd_base(cmd_args, cwd=None, uid=None, gid=None):
+    """INTERNAL/PRIVATE
+    Execute specified command with optional working directory, uid, and gid.
+
+    Returns exit status, STDOUT, and STDERR.
+    """
     def switch_uid_gid():
         if uid is not None:
             os.setuid(uid)
@@ -50,6 +45,9 @@ def _exec_cmd_base(cmd_args, cwd=None, uid=None, gid=None):
 
 
 def _exec_cmd_base_spec(cmd_args, cwd=None, uid=None, gid=None):
+    """INTERNAL/PRIVATE
+    Assembles a string description of the specified command and returns it.
+    """
     cmd_spec = "Executing {0}".format(cmd_args)
     if cwd is not None:
         cmd_spec = "{0} within {1}".format(cmd_spec, cwd)
@@ -65,7 +63,21 @@ def _exec_cmd_base_spec(cmd_args, cwd=None, uid=None, gid=None):
     return cmd_spec
 
 
+def _check_logging():
+    """Check for logging handlers.
+    """
+    if LOG.handlers:
+        return True
+    elif logging.getLogger().handlers:
+        return True
+    return False
+
+
 def exec_cmd_fail_hard(cmd_args, cwd=None, uid=None, gid=None):
+    """Execute a command and Fatal if it fails (as well as print STDERR).
+
+    Returns exit status, STDOUT, and STDERR.
+    """
     cmd_spec = _exec_cmd_base_spec(cmd_args, cwd, uid, gid)
     results = _exec_cmd_base(cmd_args, cwd, uid, gid)
     if results[0] != 0:
@@ -77,6 +89,13 @@ def exec_cmd_fail_hard(cmd_args, cwd=None, uid=None, gid=None):
 
 def exec_cmd_fail_prompt(cmd_args, cwd=None, uid=None, gid=None,
                          opt_force=None, opt_yes=None):
+    """Execute a command and if it fails:
+    - Quit if opt_yes is True
+    - Continue if opt_force is True
+    - Prompt to continue
+
+    Returns exit status, STDOUT, and STDERR.
+    """
     cmd_spec = _exec_cmd_base_spec(cmd_args, cwd, uid, gid)
     results = _exec_cmd_base(cmd_args, cwd, uid, gid)
     if results[0] != 0:
@@ -94,6 +113,11 @@ def exec_cmd_fail_prompt(cmd_args, cwd=None, uid=None, gid=None,
 
 
 def exec_cmd_debug(cmd_args, cwd=None, uid=None, gid=None):
+    """Execute a command and provide all available information about it via
+    debug.
+
+    Returns exit status, STDOUT, and STDERR.
+    """
     cmd_spec = _exec_cmd_base_spec(cmd_args, cwd, uid, gid)
     LOG.debug(cmd_spec)
     results = _exec_cmd_base(cmd_args, cwd, uid, gid)
@@ -129,7 +153,7 @@ def format_columns(rows, align=None):
 
 def log_ctrlc_and_exit():
     print(file=sys.stderr)
-    if check_logging():
+    if _check_logging():
         LOG.info("(130) Halted via KeyboardInterrupt.")
     else:
         print("CRITICAL No handlers could be found for logger \"{0}\""
@@ -144,7 +168,7 @@ def log_exception():
     data = traceback.extract_tb(exc_traceback)
     trace_bottom = ": ".join(str(i) for i in data[0])
     trace_top = ": ".join(str(i) for i in data[-1])
-    if check_logging():
+    if _check_logging():
         LOG.critical("(1) {0}: {1}:  {2}  ...  {3}"
                      .format(name, exc_value, trace_top, trace_bottom))
     else:
@@ -162,7 +186,7 @@ def log_exception_and_exit(exit_status=1):
 
 def log_fatal_and_exit():
     exc_type, exc_value, exc_traceback = sys.exc_info()
-    if check_logging():
+    if _check_logging():
         LOG.critical(exc_value)
     else:
         print("CRITICAL No handlers could be found for logger \"{0}\""
