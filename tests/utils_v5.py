@@ -53,6 +53,87 @@ def test_format_columns():
     assert result == DOC
 
 
+def test_is_valid_hostname_one_trailing_dot():
+    # GIVEN a valid hostname with one trailing dot
+    chars = list()
+    for i in list(range(63)):
+        chars.append("a")
+    hostname = "{0}.example.com.".format("".join(chars))
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is True
+    assert result is True
+
+
+def test_is_valid_hostname_two_trailing_dots():
+    # GIVEN an invalid hostname with two trailing dots
+    hostname = "example.com.."
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_to_long():
+    # GIVEN an invalid hostname that is too long (260 characters)
+    labels = list()
+    for i in list(range(26)):
+        labels.append("a123456789")
+    hostname = ".".join(labels)
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_all_numeric():
+    # GIVEN an invalid hostname that contains only numbers
+    hostname = "127.0.0.1"
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_label_to_long():
+    # GIVEN an invalid hostname that is too long (260 characters)
+    chars = list()
+    for i in list(range(64)):
+        chars.append("a")
+    hostname = "{0}.example.com".format("".join(chars))
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_label_starts_with_dash():
+    # GIVEN an invalid hostname that has a label that starts with a dash
+    hostname = "-bad.example.com"
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_label_ends_with_dash():
+    # GIVEN an invalid hostname that has a label that ends with a dash
+    hostname = "bad-.example.com"
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
+def test_is_valid_hostname_illegal_char():
+    # GIVEN an invalid hostname that contains an illegal character
+    hostname = "greater>than.example.com"
+    # WHEN hostname validity is tested
+    result = ops_utils.is_valid_hostname(hostname)
+    # THEN result is False
+    assert result is False
+
+
 def test_log_ctrlc_and_exit(capfd, caplog):
     # GIVEN opslog invocation
     # WHEN the ops_utils.log_ctrlc_and_exit function is invoked and
