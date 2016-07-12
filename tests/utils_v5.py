@@ -8,6 +8,10 @@ from __future__ import absolute_import, division, print_function
 import logging
 
 # Third-party
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import pytest
 
 # Local/library specific
@@ -21,6 +25,14 @@ apple           1          x
 banana         22  xxxxxxxxx
 Clementine    333         xx\
 """
+
+
+def _get_job_mock(exit, stdout, stderr):
+    job_mock = mock.Mock()
+    attrs = {"wait.return_value": exit, "stdout.read.return_value": stdout,
+             "stderr.read.return_value": stderr}
+    job_mock.configure_mock(**attrs)
+    return job_mock
 
 
 def test_exec_cmd_debug_success():
@@ -38,6 +50,39 @@ def test_exec_cmd_debug_success():
     assert exit_status == 0
     assert stdout == "/"
     assert stderr == ""
+
+
+@mock.patch('subprocess.Popen')
+def test_exec_cmd_fail_hard_fail(mock_subp):
+    # GIVEN a command will exit with a non-zero return code
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+
+    # WHEN the command is executed
+    # THEN a Fatal is raised
+    with pytest.raises(ops_utils.Fatal):
+        ops_utils.exec_cmd_fail_hard(cmd_args)
+
+
+@mock.patch('subprocess.Popen')
+def test_exec_cmd_fail_hard_success(mock_subp):
+    # GIVEN a command will exit with a non-zero return code
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(0, stdout, stderr)
+    mock_subp.return_value = job_mock
+
+    # WHEN the command is executed
+    exit, out, err = ops_utils.exec_cmd_fail_hard(cmd_args)
+
+    # THEN the expected results are received
+    assert exit == 0
+    assert out == stdout
+    assert err == stderr
 
 
 def test_format_columns():
