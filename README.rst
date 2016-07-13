@@ -81,7 +81,7 @@ Testing Quick Start
    resides).
 2. Install virtual environment::
 
-    mkvirtualenv -a .  opscripts_test -r tests/requirements.txt opscripts_test
+    mkvirtualenv -a . -r tests/requirements.txt opscripts_test
 
 
    a. If installing requirements errors, update `pip`::

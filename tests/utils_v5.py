@@ -27,11 +27,12 @@ Clementine    333         xx\
 """
 
 
-def _get_job_mock(exit, stdout, stderr):
+def _get_job_mock(exit_status, stdout, stderr):
     job_mock = mock.Mock()
     b_stdout = stdout.encode()
     b_stderr = stderr.encode()
-    attrs = {"wait.return_value": exit, "stdout.read.return_value": b_stdout,
+    attrs = {"wait.return_value": exit_status,
+             "stdout.read.return_value": b_stdout,
              "stderr.read.return_value": b_stderr}
     job_mock.configure_mock(**attrs)
     return job_mock
@@ -79,10 +80,10 @@ def test_exec_cmd_fail_hard_success(mock_subp):
     mock_subp.return_value = job_mock
 
     # WHEN the command is executed
-    exit, out, err = ops_utils.exec_cmd_fail_hard(cmd_args)
+    exit_status, out, err = ops_utils.exec_cmd_fail_hard(cmd_args)
 
     # THEN we receive the expected results of the command
-    assert exit == 0
+    assert exit_status == 0
     assert out == stdout
     assert err == stderr
 
@@ -101,11 +102,11 @@ def test_exec_cmd_fail_prompt_yes(mock_subp, mock_readline, mock_select):
 
     # WHEN the command is executed and we answer "y" to continue
     mock_readline.return_value = "y"
-    exit, out, err = ops_utils.exec_cmd_fail_prompt(cmd_args)
+    exit_status, out, err = ops_utils.exec_cmd_fail_prompt(cmd_args)
 
     # THEN we receive the expected results of the command
     assert mock_readline.called
-    assert exit == 1
+    assert exit_status == 1
     assert out == stdout
     assert err == stderr
 
@@ -180,10 +181,11 @@ def test_exec_cmd_fail_prompt_opt_force(mock_subp, mock_readline, mock_select):
     mock_select.return_value = (True, None, None)
 
     # WHEN the command is executed with opt_force = True
-    exit, _, _ = ops_utils.exec_cmd_fail_prompt(cmd_args, opt_force=True)
+    exit_status, _, _ = ops_utils.exec_cmd_fail_prompt(cmd_args,
+                                                       opt_force=True)
 
     # THEN we receive the expected results of the command without prompting
-    assert exit == 1
+    assert exit_status == 1
     assert mock_readline.called is False
     assert mock_select.called is False
 
