@@ -29,8 +29,10 @@ Clementine    333         xx\
 
 def _get_job_mock(exit, stdout, stderr):
     job_mock = mock.Mock()
-    attrs = {"wait.return_value": exit, "stdout.read.return_value": stdout,
-             "stderr.read.return_value": stderr}
+    b_stdout = stdout.encode()
+    b_stderr = stderr.encode()
+    attrs = {"wait.return_value": exit, "stdout.read.return_value": b_stdout,
+             "stderr.read.return_value": b_stderr}
     job_mock.configure_mock(**attrs)
     return job_mock
 
