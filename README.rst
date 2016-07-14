@@ -52,6 +52,7 @@ Dependencies
 
 - Unit Tests
 
+  - `mock`_ (only required by Python < 3.3)
   - `pytest`_
   - `pytest-catchlog`_
   - `pytest-cov`_
@@ -63,6 +64,7 @@ Dependencies
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
 .. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
 .. _`ordereddict`: https://pypi.python.org/pypi/ordereddict/1.1
+.. _`mock`: https://pypi.python.org/pypi/mock
 .. _`pytest`: http://pytest.org/latest/
 .. _`pytest-catchlog`: https://pypi.python.org/pypi/pytest-catchlog
 .. _`pytest-cov`: https://pypi.python.org/pypi/pytest-cov
@@ -81,9 +83,23 @@ Testing Quick Start
 
     mkvirtualenv -a . -r tests/requirements.txt opscripts_test
 
+
+   a. If installing requirements errors, update `pip`::
+
+       pip install --upgrade pip
+
+   b. Install requirements::
+
+       pip install -r tests/requirements.txt
+
 3. Run pytest::
 
     py.test
+
+To test against alternate Python versions, it may be useful to create virtual environments
+with an interpreter other than the one with which ``virtualenv`` was installed, e.g. for non-default python3::
+
+   mkvirtualenv -a . -p $(which python3) -r tests/requirements.txt opscripts_test3
 
 
 License

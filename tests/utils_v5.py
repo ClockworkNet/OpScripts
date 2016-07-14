@@ -8,6 +8,10 @@ from __future__ import absolute_import, division, print_function
 import logging
 
 # Third-party
+try:
+    import mock
+except ImportError:
+    import unittest.mock as mock
 import pytest
 
 # Local/library specific
@@ -21,6 +25,17 @@ apple           1          x
 banana         22  xxxxxxxxx
 Clementine    333         xx\
 """
+
+
+def _get_job_mock(exit_status, stdout, stderr):
+    job_mock = mock.Mock()
+    b_stdout = stdout.encode()
+    b_stderr = stderr.encode()
+    attrs = {"wait.return_value": exit_status,
+             "stdout.read.return_value": b_stdout,
+             "stderr.read.return_value": b_stderr}
+    job_mock.configure_mock(**attrs)
+    return job_mock
 
 
 def test_exec_cmd_debug_success():
@@ -38,6 +53,141 @@ def test_exec_cmd_debug_success():
     assert exit_status == 0
     assert stdout == "/"
     assert stderr == ""
+
+
+@mock.patch('subprocess.Popen')
+def test_exec_cmd_fail_hard_fail(mock_subp):
+    # GIVEN a command will exit with a non-zero return code
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+
+    # WHEN the command is executed
+    # THEN a Fatal is raised
+    with pytest.raises(ops_utils.Fatal):
+        ops_utils.exec_cmd_fail_hard(cmd_args)
+
+
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_hard_success(mock_subp):
+    # GIVEN a command will exit with a non-zero return code
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(0, stdout, stderr)
+    mock_subp.return_value = job_mock
+
+    # WHEN the command is executed
+    exit_status, out, err = ops_utils.exec_cmd_fail_hard(cmd_args)
+
+    # THEN we receive the expected results of the command
+    assert exit_status == 0
+    assert out == stdout
+    assert err == stderr
+
+
+@mock.patch("select.select")
+@mock.patch("sys.stdin.readline")
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_prompt_yes(mock_subp, mock_readline, mock_select):
+    # GIVEN a command that exits non-zero
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+    mock_select.return_value = (True, None, None)
+
+    # WHEN the command is executed and we answer "y" to continue
+    mock_readline.return_value = "y"
+    exit_status, out, err = ops_utils.exec_cmd_fail_prompt(cmd_args)
+
+    # THEN we receive the expected results of the command
+    assert mock_readline.called
+    assert exit_status == 1
+    assert out == stdout
+    assert err == stderr
+
+
+@mock.patch("select.select")
+@mock.patch("sys.stdin.readline")
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_prompt_no(mock_subp, mock_readline, mock_select):
+    # GIVEN a command that exits non-zero
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+    mock_select.return_value = (True, None, None)
+
+    # WHEN the command is executed and we answer "n" to continue
+    mock_readline.return_value = "n"
+
+    # THEN a Fatal is raised
+    with pytest.raises(ops_utils.Fatal):
+        ops_utils.exec_cmd_fail_prompt(cmd_args)
+
+
+@mock.patch("select.select")
+@mock.patch("sys.stdin.readline")
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_prompt_many_bad(mock_subp, mock_readline, mock_select):
+    # GIVEN a command that exits non-zero
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+    mock_select.return_value = (True, None, None)
+
+    # WHEN the command is executed and we give non-y/n answers
+    mock_readline.return_value = "x"
+
+    # THEN a Fatal is raised after trying five times
+    with pytest.raises(ops_utils.Fatal):
+        ops_utils.exec_cmd_fail_prompt(cmd_args)
+
+    assert mock_readline.call_count == 5
+
+
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_prompt_opt_yes(mock_subp):
+    # GIVEN a command that exits non-zero
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+
+    # WHEN the command is executed with opts_yes = TRUE
+    # THEN a Fatal is raised
+    with pytest.raises(ops_utils.Fatal):
+        ops_utils.exec_cmd_fail_prompt(cmd_args, opt_yes=True)
+
+
+@mock.patch("select.select")
+@mock.patch("sys.stdin.readline")
+@mock.patch("subprocess.Popen")
+def test_exec_cmd_fail_prompt_opt_force(mock_subp, mock_readline, mock_select):
+    # GIVEN a command that exits non-zero
+    cmd_args = ["foobar"]
+    stdout = "This is output"
+    stderr = "This is error"
+    job_mock = _get_job_mock(1, stdout, stderr)
+    mock_subp.return_value = job_mock
+    mock_select.return_value = (True, None, None)
+
+    # WHEN the command is executed with opt_force = True
+    exit_status, _, _ = ops_utils.exec_cmd_fail_prompt(cmd_args,
+                                                       opt_force=True)
+
+    # THEN we receive the expected results of the command without prompting
+    assert exit_status == 1
+    assert mock_readline.called is False
+    assert mock_select.called is False
 
 
 def test_format_columns():

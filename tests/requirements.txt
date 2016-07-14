@@ -1,6 +1,7 @@
 # vim: set ft=conf:
 ConfigArgParse >= 0.10.0
 PyYAML >= 3.11
+mock >= 2.0 ; python_version < '3.3'
 ordereddict >= 1.1 ; python_version < '2.7'
 pytest >= 2.8
 pytest-catchlog >= 1.2.2
