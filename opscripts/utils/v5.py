@@ -83,6 +83,8 @@ def atomic_replace_file(file, content, follow_symlink=False):
     :param content - String to be written as new content
     """
     if not follow_symlink and os.path.abspath(file) != os.path.realpath(file):
+        LOG.debug("Refusing to replace file with symlink in path: {0}"
+                  .format(file))
         return False
 
     file_dir = os.path.dirname(file)
@@ -134,7 +136,7 @@ def back_up_file(file_path, target_dir=None, suffix="_orig"):
         return False
 
     if not filename:
-        LOG.error("Invalid file supplied for backup: {}".format(file_path))
+        LOG.error("Invalid file supplied for backup: {0}".format(file_path))
         return False
 
     file_backup = os.path.join(target_dir, filename + suffix)
