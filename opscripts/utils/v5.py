@@ -135,19 +135,32 @@ def format_columns(rows, align=None):
 
     The optional align may be a list of alignment formatters.
 
+    The last (right-most) column will not have any trailing whitespace so that
+    it wraps as cleanly as possible.
+
     Based on solution provided by antak in http://stackoverflow.com/a/12065663
     """
     lines = list()
     widths = [max(map(len, map(str, col))) for col in zip(*rows)]
     for row in rows:
         formatted = list()
+        last_col = len(row) - 1
         for i, col in enumerate(row):
+            # right alighed
             if align and align[i].lower() in (">", "r"):
                 formatted.append(str(col).rjust(widths[i]))
+            # center aligned
             elif align and align[i].lower() in ("^", "c"):
-                formatted.append(str(col).center(widths[i]))
+                col_formatted = str(col).center(widths[i])
+                if i == last_col:
+                    col_formatted = col_formatted.rstrip()
+                formatted.append(col_formatted)
+            # left aligned
             else:
-                formatted.append(str(col).ljust(widths[i]))
+                if i == last_col:
+                    formatted.append(str(col))
+                else:
+                    formatted.append(str(col).ljust(widths[i]))
         lines.append("  ".join(formatted))
     return lines
 
