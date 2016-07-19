@@ -12,6 +12,7 @@ import re
 import select
 import subprocess
 import sys
+import tempfile
 import traceback
 
 
@@ -72,6 +73,79 @@ def _check_logging():
     elif logging.getLogger().handlers:
         return True
     return False
+
+
+def atomic_replace_file(file, content, follow_symlink=False):
+    """Replaces the original content with new content, maintaining
+    file ownership/perms if executed with sufficient privileges.
+
+    :param file - Full path to file
+    :param content - String to be written as new content
+    """
+    if not follow_symlink and os.path.abspath(file) != os.path.realpath(file):
+        return False
+
+    file_dir = os.path.dirname(file)
+    orig_stat = os.stat(file)
+    orig_perms = orig_stat.st_mode & 0777
+    orig_uid = orig_stat.st_uid
+    orig_gid = orig_stat.st_gid
+
+    # Create temp file with same ownerships and permissions
+    file_temp_name = write_tempfile(file_dir, content)
+    os.chown(file_temp_name, orig_uid, orig_gid)
+    os.chmod(file_temp_name, orig_perms)
+
+    # Backup file
+    file_backup = back_up_file(file)
+    # Attempt swap
+    os.unlink(file)
+    try:
+        LOG.debug("Linking temp file to original")
+        os.link(file_temp_name, file)
+    except:
+        LOG.debug("Linking backup file to original")
+        os.link(file_backup, file)
+        return False
+
+    LOG.debug("Deleting temp file and backup")
+    os.unlink(file_temp_name)
+    os.unlink(file_backup)
+
+    return True
+
+
+def back_up_file(file_path, target_dir=None, suffix="_orig"):
+    """Create a backup of a file, via os.link. Will not clobber
+    existing backups. If no target directory is supplied, will
+    use directory of file to be backed up.
+
+    :param file - Full or relative path to file requiring backup
+    :param target_dir - Where to put the backup
+    :param suffix - Suffix to apply to differentiate backup
+    """
+    if target_dir is None:
+        target_dir = os.path.dirname(os.path.abspath(file_path))
+
+    try:
+        _, filename = os.path.split(file_path)
+    except AttributeError as e:
+        LOG.error(e)
+        return False
+
+    if not filename:
+        LOG.error("Invalid file supplied for backup: {}".format(file_path))
+        return False
+
+    file_backup = os.path.join(target_dir, filename + suffix)
+
+    try:
+        os.link(file_path, file_backup)
+    except OSError as e:
+        LOG.error(e)
+        return False
+
+    return file_backup
 
 
 def exec_cmd_fail_hard(cmd_args, cwd=None, uid=None, gid=None):
@@ -303,3 +377,13 @@ def verify_root():
     """
     if not os.geteuid() == 0:
         raise Fatal("Must be root or equivalent (ex. sudo).", os.EX_NOPERM)
+
+
+def write_tempfile(directory, content):
+    file_temp_fd, file_temp_name = tempfile.mkstemp(dir=directory)
+    LOG.debug("Created temp file: {}".format(file_temp_name))
+    file_temp_fo = os.fdopen(file_temp_fd, "w")
+    file_temp_fo.writelines(content)
+    file_temp_fo.close()
+
+    return file_temp_name

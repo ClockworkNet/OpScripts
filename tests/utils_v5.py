@@ -6,6 +6,7 @@
 # Standard Library
 from __future__ import absolute_import, division, print_function
 import logging
+import os
 
 # Third-party
 try:
@@ -28,6 +29,7 @@ Clementine    333         xx\
 
 
 def _get_job_mock(exit_status, stdout, stderr):
+    """Set up a mock process as return from Popen()"""
     job_mock = mock.Mock()
     b_stdout = stdout.encode()
     b_stderr = stderr.encode()
@@ -36,6 +38,79 @@ def _get_job_mock(exit_status, stdout, stderr):
              "stderr.read.return_value": b_stderr}
     job_mock.configure_mock(**attrs)
     return job_mock
+
+
+@mock.patch("os.link")
+def test_back_up_file_success(mock_link):
+    # GIVEN I have a legitimate file to back up
+    file = "/foo/bar/baz.py"
+
+    # WHEN I back it up
+    backup_file = ops_utils.back_up_file(file)
+
+    # THEN I get the path to the backup
+    assert backup_file == "/foo/bar/baz.py_orig"
+    mock_link.assert_called_with(file, backup_file)
+
+
+@mock.patch("os.link")
+def test_back_up_file_rel_success(mock_link):
+    # GIVEN I have a relative file to back up
+    file = "baz.py"
+
+    # WHEN I back it up
+    backup_file = ops_utils.back_up_file(file)
+
+    # THEN I get the full path to the backup
+    assert backup_file == os.path.join(os.getcwd(), file + "_orig")
+    mock_link.assert_called_with(file, backup_file)
+
+
+@mock.patch("os.link")
+def test_back_up_file_custom_suffix(mock_link):
+    # GIVEN I have a legitimate file to back up
+    file = "baz.py"
+    suffix = "_bak"
+    target_dir = "/foo/bar/"
+
+    # WHEN I specify a custom dir and suffix
+    backup_file = ops_utils.back_up_file(file, target_dir, suffix)
+
+    # THEN the backup path reflects them
+    assert backup_file == os.path.join(target_dir, file + suffix)
+    mock_link.assert_called_with(file, backup_file)
+
+
+@mock.patch("os.link")
+def test_back_up_file_bad_file(mock_link):
+    # GIVEN I have a path to a directory
+    file = "/foo/bar/"
+
+    # WHEN I back it up
+    backup_file = ops_utils.back_up_file(file)
+
+    # THEN we do not attempt to link
+    assert backup_file is False
+    assert mock_link.called is False
+
+
+@mock.patch("os.link")
+def test_back_up_file_bad_input(mock_link):
+    # GIVEN I have an integer
+    file = 123
+
+    # WHEN I back it up
+    # THEN we explode and do not attempt to link
+    with pytest.raises(AttributeError):
+        ops_utils.back_up_file(file)
+
+    assert mock_link.called is False
+
+    file = None
+    with pytest.raises(AttributeError):
+        ops_utils.back_up_file(file)
+
+    assert mock_link.called is False
 
 
 def test_exec_cmd_debug_success():
