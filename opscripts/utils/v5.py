@@ -32,10 +32,11 @@ def _exec_cmd_base(cmd_args, cwd=None, uid=None, gid=None):
     Returns exit status, STDOUT, and STDERR.
     """
     def switch_uid_gid():
-        if uid is not None:
-            os.setuid(uid)
         if gid is not None:
             os.setgid(gid)
+        if uid is not None:
+            os.setuid(uid)
+
     job = subprocess.Popen(cmd_args, cwd=cwd, stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE,
                            preexec_fn=switch_uid_gid)
