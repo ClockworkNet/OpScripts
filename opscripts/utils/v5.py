@@ -87,7 +87,7 @@ def atomic_replace_file(file, content, follow_symlink=False):
 
     file_dir = os.path.dirname(file)
     orig_stat = os.stat(file)
-    orig_perms = orig_stat.st_mode & 0777
+    orig_perms = orig_stat.st_mode & 0o777
     orig_uid = orig_stat.st_uid
     orig_gid = orig_stat.st_gid
 
