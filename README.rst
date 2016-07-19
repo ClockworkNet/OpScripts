@@ -85,23 +85,23 @@ Testing Quick Start
 
     mkvirtualenv -a . -r tests/requirements.txt opscripts_test
 
-
    a. If installing requirements errors, update `pip`::
 
-       pip install --upgrade pip
+        pip install --upgrade pip
 
    b. Install requirements::
 
-       pip install -r tests/requirements.txt
+        pip install -r tests/requirements.txt
 
 3. Run pytest::
 
     py.test
 
-To test against alternate Python versions, it may be useful to create virtual environments
-with an interpreter other than the one with which ``virtualenv`` was installed, e.g. for non-default python3::
+To test against alternate Python versions, it may be useful to create virtual
+environments with an interpreter other than the one with which ``virtualenv``
+was installed, e.g. for non-default python3::
 
-   mkvirtualenv -a . -p $(which python3) -r tests/requirements.txt opscripts_test3
+    mkvirtualenv -a . -p $(which python3) -r tests/requirements.txt opscripts_test3
 
 
 License
