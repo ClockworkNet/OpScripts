@@ -76,20 +76,22 @@ def _check_logging():
     return False
 
 
-def atomic_replace_file(file, content, follow_symlink=False):
+def atomic_replace_file(file_orig, content, follow_symlink=False):
     """Replaces the original content with new content, maintaining
     file ownership/perms if executed with sufficient privileges.
 
     :param file - Full path to file
     :param content - String to be written as new content
     """
-    if not follow_symlink and os.path.abspath(file) != os.path.realpath(file):
+    file_orig_abs = os.path.abspath(file_orig)
+    file_orig_real = os.path.realpath(file_orig)
+    if not follow_symlink and file_orig_abs != file_orig_real:
         LOG.debug("Refusing to replace file with symlink in path: {0}"
-                  .format(file))
+                  .format(file_orig))
         return False
 
-    file_dir = os.path.dirname(file)
-    orig_stat = os.stat(file)
+    file_dir = os.path.dirname(file_orig)
+    orig_stat = os.stat(file_orig)
     orig_perms = orig_stat.st_mode & 0o777
     orig_uid = orig_stat.st_uid
     orig_gid = orig_stat.st_gid
@@ -100,18 +102,19 @@ def atomic_replace_file(file, content, follow_symlink=False):
     os.chmod(file_temp_name, orig_perms)
 
     # Backup file
-    file_backup = back_up_file(file)
+    file_backup = back_up_file(file_orig)
     # Attempt swap
-    os.unlink(file)
+    LOG.debug("Unlinking original file")
+    os.unlink(file_orig)
     try:
-        LOG.debug("Linking temp file to original")
-        os.link(file_temp_name, file)
+        LOG.debug("Linking temp file to original file")
+        os.link(file_temp_name, file_orig)
     except:
-        LOG.debug("Linking backup file to original")
-        os.link(file_backup, file)
+        LOG.debug("Linking backup file to original file")
+        os.link(file_backup, file_orig)
         return False
 
-    LOG.debug("Deleting temp file and backup")
+    LOG.debug("Deleting temp file and backup file")
     os.unlink(file_temp_name)
     os.unlink(file_backup)
 
