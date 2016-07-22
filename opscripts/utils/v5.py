@@ -104,13 +104,14 @@ def atomic_replace_file(file_orig, content, follow_symlink=False):
     # Backup file
     file_backup = back_up_file(file_orig)
     # Attempt swap
-    LOG.debug("Unlinking original file")
+    LOG.debug("Unlinking original file: {0}".format(file_orig))
     os.unlink(file_orig)
     try:
         LOG.debug("Linking temp file to original file")
         os.link(file_temp_name, file_orig)
     except:
-        LOG.debug("Linking backup file to original file")
+        LOG.error("Linking temp file failed. Linking backup file to original"
+                  " file")
         os.link(file_backup, file_orig)
         return False
 
@@ -146,6 +147,8 @@ def back_up_file(file_path, target_dir=None, suffix="_orig"):
     file_backup = os.path.join(target_dir, filename + suffix)
 
     try:
+        LOG.debug("Linking original file to backup file: {0}"
+                  .format(file_backup))
         os.link(file_path, file_backup)
     except OSError as e:
         LOG.error(e)
