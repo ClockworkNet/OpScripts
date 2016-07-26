@@ -12,7 +12,7 @@ import sys
 import pytest
 
 # Local/library specific
-from opscripts.notify.email import v2 as ops_notify_email
+from opscripts.notify.email import v3 as ops_notify_email
 
 
 @pytest.fixture(scope="function")
