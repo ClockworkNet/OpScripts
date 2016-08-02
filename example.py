@@ -12,7 +12,7 @@ import sys
 # Local/library specific
 from opscripts.config import v5 as ops_config
 from opscripts.logging import v2 as ops_logging
-from opscripts.utils import v5 as ops_utils
+from opscripts.utils import v6 as ops_utils
 
 
 LOG = logging.getLogger(__name__)
