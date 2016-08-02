@@ -84,7 +84,7 @@ def _get_ids_from_uid(potential_uid):
     try:
         uid = int(potential_uid)
         try:
-           gid = pwd.getpwuid(uid).pw_gid
+            gid = pwd.getpwuid(uid).pw_gid
         except KeyError:
             pass
     except ValueError:
@@ -327,7 +327,7 @@ def get_non_root_ids(username_or_uid, fallback_uid, fallback_gid):
         uid, gid = _get_ids_from_sudo_env()
     # 4. Use fallback uid and gid
     if uid in (None, 0) or gid in (None, 0):
-        uid, gid  = (fallback_uid, fallback_gid)
+        uid, gid = (fallback_uid, fallback_gid)
     return uid, gid
 
 
