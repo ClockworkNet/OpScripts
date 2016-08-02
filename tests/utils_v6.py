@@ -278,6 +278,44 @@ def test_format_columns():
     assert result == DOC
 
 
+def test_get_non_root_ids_fallback():
+    # GIVEN provided fallback ids and
+    #       invalid test_uids
+    #       there are not sudo environment variables
+    fallback_uid = 666
+    fallback_gid = 1138
+    test_uid1, test_uid2, test_uid3 = (None, 0, "")
+    # WHEN get_non_root_ids is run
+    uid1, gid1 = ops_utils.get_non_root_ids(test_uid1, fallback_uid,
+                                            fallback_gid)
+    uid2, gid2 = ops_utils.get_non_root_ids(test_uid2, fallback_uid,
+                                            fallback_gid)
+    uid3, gid3 = ops_utils.get_non_root_ids(test_uid3, fallback_uid,
+                                            fallback_gid)
+    # THEN the uids and gids will equal fallback values
+    assert (uid1, gid1) == (fallback_uid, fallback_gid)
+    assert (uid2, gid2) == (fallback_uid, fallback_gid)
+    assert (uid3, gid3) == (fallback_uid, fallback_gid)
+
+
+def test_get_non_root_ids_sudo():
+    # GIVEN provided fallback ids and
+    #       sudo environment variables set and
+    #       an invalid test_uid
+    fallback_uid = 666
+    fallback_gid = 1138
+    sudo_uid = 1337
+    sudo_gid = 1701
+    os.environ["SUDO_UID"] = str(sudo_uid)
+    os.environ["SUDO_GID"] = str(sudo_gid)
+    test_uid = None
+    # WHEN get_non_root_ids is run
+    uid, gid = ops_utils.get_non_root_ids(test_uid, fallback_uid, fallback_gid)
+    # THEN the uid and gid will equal sudo values
+    assert uid == sudo_uid
+    assert gid == sudo_gid
+
+
 def test_is_valid_hostname_one_trailing_dot():
     # GIVEN a valid hostname with one trailing dot
     chars = list()
