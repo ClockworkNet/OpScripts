@@ -10,7 +10,7 @@ import sys
 from opscripts.config import v5 as ops_config
 from opscripts.logging import v2 as ops_logging
 from opscripts.notify.email import v3 as ops_notify_email
-from opscripts.utils import v6 as ops_utils
+from opscripts.utils import v7 as ops_utils
 
 
 LOG = logging.getLogger(__name__)
