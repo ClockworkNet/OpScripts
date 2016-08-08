@@ -39,8 +39,9 @@ def _exec_cmd_base(cmd_args, cwd=None, uid=None, gids=None):
         gids = [gids, ]
     except TypeError:
         pass
-    gids = list(gids)
-    gids.sort()
+    if gids is not None:
+        gids = list(gids)
+        gids.sort()
 
     def switch_uid_gids():
         egids = os.getgroups()
@@ -158,7 +159,10 @@ def _get_ids_from_sudo_env():
     uid, gid, gids = (None, None, None)
     if "SUDO_UID" in os.environ and os.environ["SUDO_UID"] != "":
         uid = int(os.environ["SUDO_UID"])
-        pwd_entry = pwd.getpwuid(uid)
+        try:
+            pwd_entry = pwd.getpwuid(uid)
+        except KeyError:
+            return uid, gids
         username = pwd_entry.pw_name
         if "SUDO_GID" in os.environ and os.environ["SUDO_GID"] != "":
             gid = int(os.environ["SUDO_GID"])
