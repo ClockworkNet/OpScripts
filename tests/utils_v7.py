@@ -16,7 +16,7 @@ except ImportError:
 import pytest
 
 # Local/library specific
-from opscripts.utils import v6 as ops_utils
+from opscripts.utils import v7 as ops_utils
 
 MODULE = "opscripts.utils.v7"
 DOC = """\
