@@ -118,10 +118,10 @@ def test_exec_cmd_debug_success():
     cmd_args = ["pwd"]
     cwd = "/"
     uid = None
-    gid = None
+    gids = None
     # WHEN the command is executed
     exit_status, stdout, stderr = ops_utils.exec_cmd_debug(cmd_args, cwd=cwd,
-                                                           uid=uid, gid=gid)
+                                                           uid=uid, gids=gids)
     # THEN exit status should be 0 and
     #      stdout should be root directory ("/")
     #      stderr should be empty
@@ -293,27 +293,29 @@ def test_get_non_root_ids_fallback():
     uid3, gid3 = ops_utils.get_non_root_ids(test_uid3, fallback_uid,
                                             fallback_gid)
     # THEN the uids and gids will equal fallback values
-    assert (uid1, gid1) == (fallback_uid, fallback_gid)
-    assert (uid2, gid2) == (fallback_uid, fallback_gid)
-    assert (uid3, gid3) == (fallback_uid, fallback_gid)
+    assert (uid1, gid1) == (fallback_uid, [fallback_gid])
+    assert (uid2, gid2) == (fallback_uid, [fallback_gid])
+    assert (uid3, gid3) == (fallback_uid, [fallback_gid])
 
-
-def test_get_non_root_ids_sudo():
-    # GIVEN provided fallback ids and
-    #       sudo environment variables set and
-    #       an invalid test_uid
-    fallback_uid = 666
-    fallback_gid = 1138
-    sudo_uid = 1337
-    sudo_gid = 1701
-    os.environ["SUDO_UID"] = str(sudo_uid)
-    os.environ["SUDO_GID"] = str(sudo_gid)
-    test_uid = None
-    # WHEN get_non_root_ids is run
-    uid, gid = ops_utils.get_non_root_ids(test_uid, fallback_uid, fallback_gid)
-    # THEN the uid and gid will equal sudo values
-    assert uid == sudo_uid
-    assert gid == sudo_gid
+# # TODO: this test will require mock to pretend SUDO_UID is a valid system uid
+# #
+# def test_get_non_root_ids_sudo():
+#     # GIVEN provided fallback ids and
+#     #       sudo environment variables set and
+#     #       an invalid test_uid
+#     fallback_uid = 666
+#     fallback_gid = 1138
+#     sudo_uid = 1337
+#     sudo_gid = 1701
+#     os.environ["SUDO_UID"] = str(sudo_uid)
+#     os.environ["SUDO_GID"] = str(sudo_gid)
+#     test_uid = None
+#     # WHEN get_non_root_ids is run
+#     uid, gids = ops_utils.get_non_root_ids(test_uid, fallback_uid,
+#                                            fallback_gid)
+#     # THEN the uid and gid will equal sudo values
+#     assert uid == sudo_uid
+#     assert sudo_gid in gids
 
 
 def test_is_valid_hostname_one_trailing_dot():
