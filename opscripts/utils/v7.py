@@ -298,12 +298,12 @@ def exec_cmd_fail_prompt(cmd_args, cwd=None, uid=None, gids=None,
     results = _exec_cmd_base(cmd_args, cwd, uid, gids)
     if results[0] != 0:
         LOG.error("STDERR: {0}".format(results[2]))
-        if opt_yes:
-            raise Fatal("{0} failed ({1}). Yes option used. Exiting."
-                        .format(cmd_spec, results[0]), results[0])
-        elif opt_force:
+        if opt_force:
             LOG.debug("{0} failed ({1}). Force option used. Continuing."
                       .format(cmd_spec, results[0]))
+        elif opt_yes:
+            raise Fatal("{0} failed ({1}). Yes option used. Exiting."
+                        .format(cmd_spec, results[0]), results[0])
         else:
             LOG.error("{0} failed ({1})".format(cmd_spec, results[0]))
             request_y_to_continue()
