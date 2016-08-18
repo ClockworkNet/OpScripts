@@ -546,7 +546,7 @@ def verify_root():
 
 def write_tempfile(directory, content):
     file_temp_fd, file_temp_name = tempfile.mkstemp(dir=directory)
-    LOG.debug("Created temp file: {}".format(file_temp_name))
+    LOG.debug("Created temp file: {0}".format(file_temp_name))
     file_temp_fo = os.fdopen(file_temp_fd, "w")
     file_temp_fo.writelines(content)
     file_temp_fo.close()
