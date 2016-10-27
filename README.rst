@@ -48,8 +48,8 @@ Dependencies
 
 - ``opscripts.yaml``
 
-  - `PyYAML`_
   - `ordereddict`_ (only required by Python 2.6)
+  - `PyYAML`_
 
 - Unit Tests
 
