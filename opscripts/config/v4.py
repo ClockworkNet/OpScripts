@@ -12,7 +12,7 @@ import sys
 import configargparse
 
 # Local/library specific
-from opscripts.notify.email import v1 as ops_notify_email
+from opscripts.notify.email import v2 as ops_notify_email
 
 
 def OpsConfigArgParse(**kwargs):
