@@ -27,7 +27,7 @@ impacting the function and stability of the scripts that use them.
 
 For example::
 
-    from opscripts.config import v5 as ops_config
+    from opscripts.config import v6 as ops_config
     from opscripts.logging import v2 as ops_logging
     from opscripts.utils import v7 as ops_utils
 

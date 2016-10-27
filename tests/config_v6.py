@@ -17,7 +17,7 @@ import sys
 import pytest
 
 # Local/library specific
-from opscripts.config import v5 as ops_config
+from opscripts.config import v6 as ops_config
 
 
 @pytest.fixture(scope="function")
