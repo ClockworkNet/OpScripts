@@ -44,6 +44,7 @@ Dependencies
 - ``opscripts.config``
 
   - `ConfigArgParse`_
+  - `PyYAML`_
 
 - ``opscripts.yaml``
 
