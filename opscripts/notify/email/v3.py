@@ -10,7 +10,7 @@ import smtplib
 import socket
 
 # Local/library specific
-from opscripts.utils import v7 as ops_utils
+from opscripts.utils import v8 as ops_utils
 
 
 DEFAULT_HOST = "localhost"

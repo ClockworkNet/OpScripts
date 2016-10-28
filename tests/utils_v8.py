@@ -16,9 +16,9 @@ except ImportError:
 import pytest
 
 # Local/library specific
-from opscripts.utils import v7 as ops_utils
+from opscripts.utils import v8 as ops_utils
 
-MODULE = "opscripts.utils.v7"
+MODULE = "opscripts.utils.v8"
 DOC = """\
 Alfa        Bravo    Charlie
 ----        -----    -------
@@ -422,7 +422,7 @@ def test_log_ctrlc_and_exit__without_logging(capfd):
 
 def test_log_exception(capfd, caplog):
     # GIVEN the expected output to logging
-    expected_log_start = "(1) Fatal: (4) test_log_exception:"
+    expected_log_start = "Unhandled exception:"
     eel = len(expected_log_start)
     # WHEN a ops_utils.Fatal is raised and
     #      the exception is logged via ops_utils.log_exception and
@@ -434,17 +434,17 @@ def test_log_exception(capfd, caplog):
     out, err = capfd.readouterr()
     # THEN there should be nothing written to stderr and
     #      there should be a single log message and
-    #      the log level of the message should be CRITICAL and
+    #      the log level of the message should be ERROR and
     #      the beginning of log message should match the expected text
     assert err == ""
     assert len(caplog.records) == 1
-    assert caplog.records[0].levelno == logging.CRITICAL
+    assert caplog.records[0].levelno == logging.ERROR
     assert caplog.records[0].message[0:eel] == expected_log_start
 
 
 def test_log_exception_and_exit(capfd, caplog):
     # GIVEN the expected output to logging
-    expected_log_start = "(1) Fatal: (3) test_log_exception_and_exit:"
+    expected_log_start = "Unhandled exception:"
     eel = len(expected_log_start)
     # WHEN a ops_utils.Fatal is raised and
     #      the exception is logged via ops_utils.log_exception_and_exit and
@@ -459,12 +459,12 @@ def test_log_exception_and_exit(capfd, caplog):
     #      the exit status should be 2 and
     #      there should be nothing written to stderr and
     #      there should be a single log message and
-    #      the log level of the message should be CRITICAL and
+    #      the log level of the message should be ERROR and
     #      the beginning of log message should match the expected text
     assert int(str(e.value)) == 1
     assert err == ""
     assert len(caplog.records) == 1
-    assert caplog.records[0].levelno == logging.CRITICAL
+    assert caplog.records[0].levelno == logging.ERROR
     assert caplog.records[0].message[0:eel] == expected_log_start
 
 
