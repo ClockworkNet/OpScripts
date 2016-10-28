@@ -29,7 +29,7 @@ For example::
 
     from opscripts.config import v6 as ops_config
     from opscripts.logging import v2 as ops_logging
-    from opscripts.utils import v7 as ops_utils
+    from opscripts.utils import v8 as ops_utils
 
 For a more in-depth examples, see the:
 
