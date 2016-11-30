@@ -15,6 +15,26 @@ import configargparse
 from opscripts.notify.email import v3 as ops_notify_email
 
 
+# Add all public classes and constants from configargparse module's namespace
+# (which wraps argparse module's namespace) so that scripts that use this
+# library do not need to load either
+HelpFormatter = configargparse.HelpFormatter
+RawDescriptionHelpFormatter = configargparse.RawDescriptionHelpFormatter
+RawTextHelpFormatter = configargparse.RawTextHelpFormatter
+ArgumentDefaultsHelpFormatter = configargparse.ArgumentDefaultsHelpFormatter
+ArgumentError = configargparse.ArgumentError
+ArgumentTypeError = configargparse.ArgumentTypeError
+Action = configargparse.Action
+FileType = configargparse.FileType
+Namespace = configargparse.Namespace
+ONE_OR_MORE = configargparse.ONE_OR_MORE
+OPTIONAL = configargparse.OPTIONAL
+REMAINDER = configargparse.REMAINDER
+SUPPRESS = configargparse.SUPPRESS
+ZERO_OR_MORE = configargparse.ZERO_OR_MORE
+SUPPRESS = configargparse.SUPPRESS
+
+
 def OpsConfigArgParse(**kwargs):
     """Wrap configargparse.ArgumentParser so that:
     - default_config_path includes /etc/opscripts/SCRIPTNAME.yaml.
