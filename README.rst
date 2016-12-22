@@ -1,8 +1,6 @@
 OpScripts
 =========
 
-Python libraries to assist with writing Linux Ops scripts.
-
 .. image:: https://img.shields.io/pypi/v/OpScripts.svg
     :alt: badge: Python Package Index version
     :align: right
@@ -11,6 +9,7 @@ Python libraries to assist with writing Linux Ops scripts.
     :alt: badge: GitHub most recent tag
     :align: right
     :target: https://github.com/ClockworkNet/OpScripts/tags
+Python libraries to assist with writing Linux Ops scripts.
 
 
 Python Compatibility
