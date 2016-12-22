@@ -17,16 +17,21 @@ Python Compatibility
 
 This library currently requires compatibility with:
 
+
+.. image:: https://img.shields.io/pypi/pyversions/OpScripts.svg
+    :alt: badge: Python Package Index supported Python versions
+    :align: right
+    :target: https://pypi.python.org/pypi/OpScripts
 - 2.6
 - 2.7
 - 3.4
 
-However, additional versions are tested automatically:
-
 .. image:: https://img.shields.io/travis/ClockworkNet/OpScripts/master.svg
-    :alt: badge: Travis CI status for master branch
+    :alt: badge: Travis CI master branch status
     :align: right
     :target: https://travis-ci.org/ClockworkNet/OpScripts
+However, additional versions are tested automatically.
+
 
 
 API Versioning
