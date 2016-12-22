@@ -3,6 +3,15 @@ OpScripts
 
 Python libraries to assist with writing Linux Ops scripts.
 
+.. image:: https://img.shields.io/pypi/v/OpScripts.svg
+    :alt: badge: Python Package Index version
+    :align: right
+    :target: https://pypi.python.org/pypi/OpScripts
+.. image:: https://img.shields.io/github/tag/ClockworkNet/OpScripts.svg
+    :alt: badge: GitHub most recent tag
+    :align: right
+    :target: https://github.com/ClockworkNet/OpScripts/tags
+
 
 Python Compatibility
 ====================
@@ -15,7 +24,9 @@ This library currently requires compatibility with:
 
 However, additional versions are tested automatically:
 
-.. image:: https://travis-ci.org/ClockworkNet/OpScripts.svg?branch=master
+.. image:: https://img.shields.io/travis/ClockworkNet/OpScripts/master.svg
+    :alt: badge: Travis CI status for master branch
+    :align: right
     :target: https://travis-ci.org/ClockworkNet/OpScripts
 
 
@@ -106,6 +117,10 @@ was installed, e.g. for non-default python3::
 License
 =======
 
+.. image:: https://img.shields.io/github/license/ClockworkNet/OpScripts.svg
+    :alt: badge: GitHub license (MIT)
+    :align: right
+    :target: `MIT License`_
 - `<LICENSE>`_ (`MIT License`_)
 
 .. _`MIT License`: http://www.opensource.org/licenses/MIT
