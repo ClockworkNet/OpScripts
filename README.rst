@@ -1,3 +1,7 @@
+.. image:: https://img.shields.io/badge/Supported%20by-Clockwork-ffcc00.svg
+    :alt: badge: Supported by Clockwork
+    :align: right
+    :target: https://www.clockwork.com/
 OpScripts
 =========
 
