@@ -7,11 +7,12 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-  - "3.5-dev" # 3.5 development branch
+  - "3.6"
+  - "3.6-dev" # 3.6 development branch
   - "nightly" # currently points to 3.6-dev
 matrix:
   allow_failures:
-    - python: "3.5-dev"
+    - python: "3.6-dev"
     - python: "nightly"
 install:
 - "pip install -r tests/requirements.txt"
