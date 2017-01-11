@@ -17,7 +17,7 @@ from opscripts.notify.email import v3 as ops_notify_email
 
 # Add all public classes and constants from configargparse module's namespace
 # (which wraps argparse module's namespace) so that scripts that use this
-# library do not need to load either
+# library do not need to also load it
 HelpFormatter = configargparse.HelpFormatter
 RawDescriptionHelpFormatter = configargparse.RawDescriptionHelpFormatter
 RawTextHelpFormatter = configargparse.RawTextHelpFormatter
