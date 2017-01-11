@@ -83,7 +83,6 @@ class Message():
             s = None
             try:
                 s = smtplib.SMTP(host, port)
-                s.sendmail(sender, recipients, email_message)
             except socket.error as e:
                 #  8 nodename nor servname provided, or not known
                 # 61 Connection refused
@@ -94,6 +93,5 @@ class Message():
                     raise ops_utils.Fatal(err_msg, os.EX_UNAVAILABLE)
                 else:
                     raise
-            finally:
-                if s:
-                    s.quit()
+            s.sendmail(sender, recipients, email_message)
+            s.quit()
