@@ -96,20 +96,30 @@ def test_back_up_file_bad_file(mock_link):
 
 @mock.patch("os.link")
 def test_back_up_file_bad_input(mock_link):
-    # GIVEN I have an integer
-    file = 123
+    # GIVEN I have an integer or None
+    file1 = 123
+    file2 = None
 
     # WHEN I back it up
     # THEN we explode and do not attempt to link
-    with pytest.raises(AttributeError):
-        ops_utils.back_up_file(file)
-
+    try:
+        # Python 3.6
+        with pytest.raises(TypeError):
+            ops_utils.back_up_file(file1)
+    except:
+        # Python 2.7 - 3.5
+        with pytest.raises(AttributeError):
+            ops_utils.back_up_file(file1)
     assert mock_link.called is False
 
-    file = None
-    with pytest.raises(AttributeError):
-        ops_utils.back_up_file(file)
-
+    try:
+        # Python 3.6
+        with pytest.raises(TypeError):
+            ops_utils.back_up_file(file2)
+    except:
+        # Python 2.7 - 3.5
+        with pytest.raises(AttributeError):
+            ops_utils.back_up_file(file2)
     assert mock_link.called is False
 
 
