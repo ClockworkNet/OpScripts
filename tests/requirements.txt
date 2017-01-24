@@ -11,5 +11,5 @@ pytest-localserver >= 0.3
 pytest-pep257 >= 0.0.5
 pytest-pep8 >= 1.0
 pytest-pythonpath >= 0.7
-pytest-remove-stale-bytecode >= 2.1
+pytest-remove-stale-bytecode >= 2.1 ; python_version > '2.7'
 pytest-warnings >= 0.2
