@@ -79,6 +79,7 @@ Dependencies
   - `pytest-flakes`_
   - `pytest-localserver`_
   - `pytest-pep8`_
+  - `pytest-pep257`_
   - `pytest-pythonpath`_
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
@@ -92,6 +93,7 @@ Dependencies
 .. _`pytest-localserver`: https://pypi.python.org/pypi/pytest-localserver
 .. _`pytest-pep8`: http://pypi.python.org/pypi/pytest-pep8
 .. _`pytest-pythonpath`: https://pypi.python.org/pypi/pytest-pythonpath
+.. _`pytest-pep257`: https://pypi.python.org/pypi/pytest-pep257
 
 
 Testing Quick Start
