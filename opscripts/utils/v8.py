@@ -61,7 +61,9 @@ def _exec_cmd_base(cmd_args, cwd=None, uid=None, gids=None):
                            preexec_fn=switch_uid_gids)
     exit_status = job.wait()
     stdout = job.stdout.read().strip().decode("utf-8")
+    job.stdout.close()
     stderr = job.stderr.read().strip().decode("utf-8")
+    job.stderr.close()
     return [exit_status, stdout, stderr]
 
 
@@ -407,7 +409,7 @@ def is_valid_hostname(hostname):
 
     http://stackoverflow.com/questions/2532053/validate-a-hostname-string
     """
-    disallowed = re.compile("[^A-Z\d-]", re.IGNORECASE)
+    disallowed = re.compile(r"[^A-Z\d-]", re.IGNORECASE)
     # strip exactly one dot from the right, if present
     if hostname.endswith("."):
         hostname = hostname[:-1]

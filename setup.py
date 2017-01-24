@@ -16,7 +16,7 @@ from setuptools import find_packages, setup
 
 
 setup_path = os.path.dirname(os.path.realpath(__file__))
-re_info = re.compile("""
+re_info = re.compile(r"""
         # Description docstring
         ^" " "(?P<description>.+)
         ^" " ".*

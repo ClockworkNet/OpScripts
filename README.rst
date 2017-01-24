@@ -2,6 +2,7 @@
     :alt: badge: Supported by Clockwork
     :align: right
     :target: https://www.clockwork.com/
+
 OpScripts
 =========
 
@@ -35,7 +36,6 @@ This library currently requires compatibility with:
     :align: right
     :target: https://travis-ci.org/ClockworkNet/OpScripts
 However, additional versions are tested automatically.
-
 
 
 API Versioning
@@ -81,6 +81,8 @@ Dependencies
   - `pytest-pep8`_
   - `pytest-pep257`_
   - `pytest-pythonpath`_
+  - `pytest-remove-stale-bytecode`_
+  - `pytest-warnings`_
 
 .. _`ConfigArgParse`: https://github.com/bw2/ConfigArgParse
 .. _`PyYAML`: http://pyyaml.org/wiki/PyYAML
@@ -94,7 +96,9 @@ Dependencies
 .. _`pytest-pep8`: http://pypi.python.org/pypi/pytest-pep8
 .. _`pytest-pythonpath`: https://pypi.python.org/pypi/pytest-pythonpath
 .. _`pytest-pep257`: https://pypi.python.org/pypi/pytest-pep257
-
+.. _`pytest-remove-stale-bytecode`:
+   https://bitbucket.org/gocept/pytest-remove-stale-bytecode/
+.. _`pytest-warnings`: https://github.com/fschulze/pytest-warnings
 
 Testing Quick Start
 ===================
@@ -121,7 +125,8 @@ To test against alternate Python versions, it may be useful to create virtual
 environments with an interpreter other than the one with which ``virtualenv``
 was installed, e.g. for non-default python3::
 
-    mkvirtualenv -a . -p $(which python3) -r tests/requirements.txt opscripts_test3
+    mkvirtualenv -a . -p $(which python3) -r tests/requirements.txt \
+        opscripts_test3
 
 
 License
