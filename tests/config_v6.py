@@ -30,11 +30,13 @@ def test_cap_simple(prog):
     # GIVEN ops_config
     # WHEN intialized without default_config_files
     cap = ops_config.OpsConfigArgParse()
+    default_conf_name = "{0}.{1}".format(os.path.splitext(prog)[0], "yaml")
+    default_conf_path = os.path.join("/etc/opscripts", default_conf_name)
     # THEN cap object's default_config_files should contain only the default
     #      added by OpsConfigArgParse and
     #      cap object's add_config_file_help should be False
     #      cap object's ignore_unknown_config_file_keys should be True
-    assert cap._default_config_files == ["/etc/opscripts/py.yaml"]
+    assert cap._default_config_files == [default_conf_path]
     assert cap._add_config_file_help is False
     assert cap._ignore_unknown_config_file_keys is True
 
@@ -50,13 +52,14 @@ def test_cap_with_add_config_file_help(prog):
 def test_cap_with_default_config_files(prog):
     # GIVEN ops_config and specified conf_files
     conf_files = ["/conf1", ".conf2"]
+    default_conf_name = "{0}.{1}".format(os.path.splitext(prog)[0], "yaml")
+    default_conf_path = os.path.join("/etc/opscripts", default_conf_name)
     # WHEN intialized with specified default_config_files
     cap = ops_config.OpsConfigArgParse(default_config_files=conf_files)
     # THEN object's default_config_files should contain a combination of the
     #      specified configuration files and the default added by
     #      OpsConfigArgParse
-    assert cap._default_config_files == ["/conf1", ".conf2",
-                                         "/etc/opscripts/py.yaml"]
+    assert cap._default_config_files == ["/conf1", ".conf2", default_conf_path]
 
 
 def test_cap_with_ignore_unknown_config_file_keys(prog):
